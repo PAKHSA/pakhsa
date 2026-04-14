@@ -42,59 +42,58 @@ const PakshaModal = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-navy/60 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          style={{ backgroundColor: "rgba(0,0,0,0.85)" }}
           onClick={dismiss}
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="bg-snow rounded-2xl shadow-xl max-w-md w-full p-8 relative"
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="bg-card border border-border rounded-md max-w-[520px] w-full p-10 md:p-12 relative"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={dismiss}
-              className="absolute top-4 right-4 text-muted-foreground hover:text-navy transition-colors"
+              className="absolute top-4 right-4 text-muted-foreground/40 hover:text-foreground transition-colors"
               aria-label="Close"
             >
               <X size={20} />
             </button>
 
-            <div className="text-center">
-              <div className="text-5xl mb-4">🛵⛰️</div>
-              <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-accent text-accent-foreground mb-4">
-                🚀 Coming Soon to Srinagar
-              </span>
-              <h3 className="font-heading text-2xl font-bold text-navy mb-3">
-                Getting Around Kashmir Just Got Easier
+            <div>
+              <p className="eyebrow mb-4">🛵 LAUNCHING SOON</p>
+              <h3 className="text-3xl md:text-[42px] font-[800] uppercase tracking-tight leading-[1.1] text-foreground mb-4">
+                YOUR DRIVER<br />AWAITS.
               </h3>
-              <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-                Paksha is Kashmir's first dedicated bike taxi app. Book a local driver, explore at your own pace, and travel with confidence. Launching soon.
+              <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+                Paksha is Kashmir's first dedicated bike taxi app. Be the first to book a ride when we launch in Srinagar.
               </p>
 
-              <div className="flex justify-center gap-6 mb-6 text-sm text-navy">
-                <span>🛵 Local Drivers</span>
-                <span>🛡️ PVC Verified</span>
-                <span>💰 Fixed Fares</span>
+              <div className="flex flex-wrap gap-3 mb-6">
+                {["3 MIN PICKUP", "PVC VERIFIED", "FIXED FARES"].map((chip) => (
+                  <span key={chip} className="px-3 py-1.5 text-[11px] font-medium uppercase tracking-wide bg-muted border-l-2 border-accent text-foreground">
+                    {chip}
+                  </span>
+                ))}
               </div>
 
               <form onSubmit={(e) => { e.preventDefault(); dismiss(); }} className="space-y-3">
                 <input
                   type="email"
-                  placeholder="Enter your email to join the waitlist"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-river"
+                  placeholder="your@email.com"
+                  className="w-full px-4 py-3 bg-muted border border-border text-foreground text-base placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent rounded-sm"
                   required
                 />
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-lg bg-gradient-to-r from-navy to-river text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity"
+                  className="w-full py-3 bg-accent text-accent-foreground font-bold text-sm uppercase tracking-wide hover:opacity-90 transition-opacity rounded-sm"
                 >
-                  Notify Me on Launch
+                  Get Early Access →
                 </button>
               </form>
-              <p className="text-xs text-muted-foreground mt-3">No spam. We'll only write when Paksha is live.</p>
-              <p className="text-xs text-river mt-2 cursor-pointer hover:underline">Already joined? Share with a friend</p>
+              <p className="text-xs text-muted-foreground mt-3">One email. When we launch. Nothing more.</p>
             </div>
           </motion.div>
         </motion.div>
