@@ -4,8 +4,8 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Home", path: "/" },
-  { label: "Explore Kashmir", path: "/explore" },
+  { label: "HOME", path: "/" },
+  { label: "EXPLORE KASHMIR", path: "/explore" },
 ];
 
 const Navbar = () => {
@@ -13,10 +13,10 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-snow/80 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
-        <Link to="/" className="font-heading text-2xl font-bold text-navy tracking-tight">
-          Paksha
+        <Link to="/" className="text-xl font-[800] uppercase tracking-tight text-foreground">
+          PAKSHA
         </Link>
 
         {/* Desktop */}
@@ -25,10 +25,10 @@ const Navbar = () => {
             <Link
               key={link.path}
               to={link.path}
-              className={`text-sm font-medium transition-colors relative pb-1 ${
+              className={`text-[13px] uppercase tracking-[0.05em] font-medium transition-colors ${
                 location.pathname === link.path
-                  ? "text-navy after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-glacier after:rounded-full"
-                  : "text-muted-foreground hover:text-navy"
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {link.label}
@@ -39,7 +39,7 @@ const Navbar = () => {
         <div className="hidden md:block">
           <a
             href="#waitlist"
-            className="inline-flex items-center px-5 py-2 text-sm font-medium rounded-full bg-navy text-primary-foreground hover:bg-river transition-colors"
+            className="inline-flex items-center px-5 py-2 text-[13px] font-bold uppercase tracking-wide rounded bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
           >
             Join Waitlist
           </a>
@@ -48,7 +48,7 @@ const Navbar = () => {
         {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-navy"
+          className="md:hidden p-2 text-foreground"
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -62,7 +62,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-snow border-b border-border overflow-hidden"
+            className="md:hidden bg-background border-b border-border overflow-hidden"
           >
             <div className="flex flex-col px-4 py-4 gap-3">
               {navLinks.map((link) => (
@@ -70,8 +70,8 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileOpen(false)}
-                  className={`text-sm font-medium py-2 ${
-                    location.pathname === link.path ? "text-navy" : "text-muted-foreground"
+                  className={`text-[13px] uppercase tracking-wide font-medium py-2 ${
+                    location.pathname === link.path ? "text-foreground" : "text-muted-foreground"
                   }`}
                 >
                   {link.label}
@@ -80,7 +80,7 @@ const Navbar = () => {
               <a
                 href="#waitlist"
                 onClick={() => setMobileOpen(false)}
-                className="inline-flex items-center justify-center px-5 py-2 text-sm font-medium rounded-full bg-navy text-primary-foreground"
+                className="inline-flex items-center justify-center px-5 py-2 text-[13px] font-bold uppercase rounded bg-accent text-accent-foreground"
               >
                 Join Waitlist
               </a>

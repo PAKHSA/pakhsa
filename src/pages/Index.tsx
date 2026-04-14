@@ -1,40 +1,165 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { PhoneMockup, BookingScreen, MatchingScreen, EarningsScreen } from "@/components/PhoneMockup";
-import MountainSilhouette from "@/components/MountainSilhouette";
 import Footer from "@/components/Footer";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.15, duration: 0.5 } }),
-};
+/* ───── HERO ───── */
+const heroWords = ["RIDE", "THE", "VALLEY."];
 
 const HeroSection = () => (
-  <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-navy via-river to-glacier overflow-hidden pt-16">
-    <MountainSilhouette />
-    <div className="container mx-auto px-4 relative z-10 py-20">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <motion.div initial="hidden" animate="visible" className="text-center lg:text-left">
-          <motion.h1
-            variants={fadeUp} custom={0}
-            className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6"
-          >
-            Ride Through the Valley of Heaven
-          </motion.h1>
-          <motion.p variants={fadeUp} custom={1} className="text-glacier text-lg md:text-xl mb-8 max-w-lg mx-auto lg:mx-0">
-            Paksha connects Kashmir's travelers with trusted local bike taxi drivers — safe, affordable, and built for the mountains.
-          </motion.p>
-          <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <button className="px-6 py-3 rounded-full border-2 border-primary-foreground/40 text-primary-foreground font-medium text-sm hover:bg-primary-foreground/10 transition-colors">
-              Download on App Store
-            </button>
-            <button className="px-6 py-3 rounded-full bg-snow text-navy font-medium text-sm hover:bg-snow/90 transition-colors">
-              Get on Google Play
-            </button>
-          </motion.div>
-        </motion.div>
+  <section className="relative min-h-screen flex flex-col bg-background overflow-hidden pt-16">
+    {/* Background image overlay */}
+    <div
+      className="absolute inset-0 bg-cover bg-center"
+      style={{
+        backgroundImage: "url('https://images.unsplash.com/photo-1597074866923-dc0589150358?w=1920&q=80')",
+        opacity: 0.25,
+      }}
+    />
+    <div className="absolute inset-0 bg-background/75" />
 
-        <div className="flex justify-center items-end gap-4">
+    <div className="container mx-auto px-4 relative z-10 flex-1 flex flex-col justify-center">
+      <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p className="eyebrow mb-6">— KASHMIR'S FIRST BIKE TAXI APP</p>
+          <h1 className="mb-6">
+            {heroWords.map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="block text-foreground leading-[0.95]"
+                style={{ fontSize: "clamp(56px, 8vw, 120px)" }}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-muted-foreground text-base md:text-lg max-w-[480px] mb-8 leading-relaxed"
+          >
+            Paksha connects you with trusted local drivers across Srinagar and Kashmir. Built for mountain terrain. Launching soon.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex flex-wrap gap-4"
+          >
+            <a href="#waitlist" className="px-6 py-3 bg-accent text-accent-foreground font-bold text-sm uppercase tracking-wide rounded-sm hover:opacity-90 transition-opacity">
+              Join Waitlist →
+            </a>
+            <a href="#how" className="px-6 py-3 border border-foreground/30 text-foreground font-medium text-sm uppercase tracking-wide rounded-sm hover:bg-foreground/5 transition-colors">
+              See How It Works
+            </a>
+          </motion.div>
+        </div>
+
+        <div className="flex justify-center items-end gap-3">
+          <PhoneMockup className="animate-float hidden sm:block">
+            <BookingScreen />
+          </PhoneMockup>
+          <PhoneMockup className="animate-float-delayed">
+            <MatchingScreen />
+          </PhoneMockup>
+          <PhoneMockup className="animate-float-delayed-2 hidden sm:block">
+            <EarningsScreen />
+          </PhoneMockup>
+        </div>
+      </div>
+    </div>
+
+    {/* Marquee ticker */}
+    <div className="relative z-10 bg-accent py-3 overflow-hidden">
+      <div className="animate-marquee flex whitespace-nowrap">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <span key={i} className="text-accent-foreground text-sm font-bold uppercase tracking-widest mx-4">
+            SRINAGAR · GULMARG · PAHALGAM · SONAMARG · DAL LAKE · DOODHPATHRI · LAL CHOWK · PVC VERIFIED DRIVERS ·&nbsp;
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+/* ───── STATS ───── */
+const CountUp = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const [val, setVal] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const duration = 1200;
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      setVal(Math.floor(progress * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, target]);
+
+  return <span ref={ref}>{val}{suffix}</span>;
+};
+
+const stats = [
+  { value: 3, suffix: " MIN", label: "Average pickup time" },
+  { value: 100, suffix: "%", label: "PVC Verified drivers" },
+  { value: 0, suffix: "", label: "Surge pricing ever", display: "₹0" },
+  { value: 7, suffix: "", label: "Valleys we operate in" },
+];
+
+const StatsSection = () => (
+  <section className="bg-background border-y border-border">
+    <div className="container mx-auto px-4">
+      <div className="grid grid-cols-2 md:grid-cols-4">
+        {stats.map((s, i) => (
+          <div key={i} className={`py-12 md:py-16 text-center ${i > 0 ? "border-l border-border" : ""}`}>
+            <p className="text-5xl md:text-7xl font-[800] text-foreground leading-none mb-2">
+              {s.display || <CountUp target={s.value} suffix={s.suffix} />}
+            </p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wide">{s.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+/* ───── APP SCREENS ───── */
+const AppSection = () => (
+  <section className="section-padding bg-card">
+    <div className="container mx-auto px-4">
+      <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p className="eyebrow mb-4">— THE APP</p>
+          <h2 className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-6">
+            DESIGNED FOR<br />KASHMIR.
+          </h2>
+          <p className="text-muted-foreground text-base mb-10 max-w-lg leading-relaxed">
+            No confusing UX. No unnecessary features. Just open the app, set your destination, and a local driver comes to you in minutes.
+          </p>
+          <div className="space-y-0">
+            {[
+              "Book a ride in 30 seconds",
+              "Track your driver live on map",
+              "Pay fixed fares, no surprises",
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-4 py-4 border-t border-border">
+                <span className="text-accent font-bold text-lg">0{i + 1}</span>
+                <span className="text-foreground text-sm font-medium">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-center items-end gap-3">
           <PhoneMockup className="animate-float hidden sm:block">
             <BookingScreen />
           </PhoneMockup>
@@ -50,32 +175,30 @@ const HeroSection = () => (
   </section>
 );
 
-const steps = [
-  { icon: "📍", title: "Set Your Destination", desc: "Enter where you're going anywhere in Srinagar or surrounding valleys" },
-  { icon: "🛵", title: "Match With a Driver", desc: "Get connected to a PVC-verified local driver in under 3 minutes" },
-  { icon: "🏔️", title: "Ride & Explore", desc: "Travel safely through Kashmir's most stunning routes" },
+/* ───── HOW IT WORKS ───── */
+const howSteps = [
+  { num: "01", title: "SET YOUR DESTINATION", desc: "Enter pickup & drop anywhere in Kashmir. The app shows drivers near you in real time." },
+  { num: "02", title: "MATCH WITH A LOCAL", desc: "Every Paksha driver is PVC-verified by J&K Police. You see their name, bike, and rating before confirming." },
+  { num: "03", title: "RIDE & EXPLORE", desc: "Your driver knows every shortcut, viewpoint, and chai dhaba. Travel like a local." },
 ];
 
 const HowItWorks = () => (
-  <section className="py-20 bg-background">
+  <section id="how" className="section-padding bg-background">
     <div className="container mx-auto px-4">
-      <motion.h2
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="font-heading text-3xl md:text-4xl font-bold text-navy text-center mb-14"
-      >
-        How It Works
-      </motion.h2>
-      <div className="grid md:grid-cols-3 gap-8">
-        {steps.map((s, i) => (
+      <p className="eyebrow mb-4">— HOW IT WORKS</p>
+      <div className="grid md:grid-cols-3 gap-8 md:gap-0 mt-12">
+        {howSteps.map((s, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ delay: i * 0.15 }}
-            className="text-center p-6"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.15 }}
+            className={`${i > 0 ? "md:border-l md:border-border md:pl-8" : ""}`}
           >
-            <div className="text-5xl mb-4">{s.icon}</div>
-            <h3 className="font-heading text-xl font-semibold text-navy mb-2">{s.title}</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
+            <p className="text-6xl md:text-7xl font-[800] text-accent leading-none mb-4">{s.num}</p>
+            <h3 className="text-xl md:text-2xl font-[800] uppercase tracking-tight text-foreground mb-3">{s.title}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">{s.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -83,33 +206,35 @@ const HowItWorks = () => (
   </section>
 );
 
+/* ───── WHY PAKSHA ───── */
 const features = [
-  { icon: "🛡️", title: "PVC Verified Drivers", desc: "Every driver verified with J&K Police Verification Certificate" },
-  { icon: "💰", title: "Transparent Fares", desc: "No surge pricing. Fixed, affordable rates for every route" },
-  { icon: "🗺️", title: "Local Knowledge", desc: "Drivers know every shortcut, chai stop, and hidden viewpoint" },
-  { icon: "📱", title: "Built for Kashmir", desc: "Works on low connectivity. Designed for mountain terrain" },
+  { title: "PVC VERIFIED DRIVERS", desc: "Every driver background-checked by J&K Police Verification Certificate before joining." },
+  { title: "FIXED FARES ONLY", desc: "No surge pricing. Ever. You see the price before you book." },
+  { title: "LOCAL KNOWLEDGE", desc: "Our drivers know Kashmir — the routes, the weather, the best stops." },
+  { title: "LOW CONNECTIVITY MODE", desc: "Works on 2G. Built for mountain terrain where signal drops." },
+  { title: "DRIVER-FIRST EARNINGS", desc: "Drivers keep the majority. We take the minimum. Fairness is in our DNA." },
+  { title: "WOMEN SAFETY FEATURE", desc: "Option to request a female driver. Emergency SOS one tap away." },
 ];
 
 const WhyPaksha = () => (
-  <section className="py-20 bg-snow">
+  <section className="section-padding bg-card">
     <div className="container mx-auto px-4">
-      <motion.h2
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        className="font-heading text-3xl md:text-4xl font-bold text-navy text-center mb-14"
-      >
-        Why Paksha
-      </motion.h2>
-      <div className="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+      <p className="eyebrow mb-4">— WHY PAKSHA</p>
+      <h2 className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-16 max-w-3xl leading-[1.1]">
+        WE BUILT THIS FOR KASHMIR.<br />NOT A COPY-PASTE APP.
+      </h2>
+      <div className="grid md:grid-cols-2 gap-x-16">
         {features.map((f, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-            className="bg-background rounded-xl p-6 border border-border hover:shadow-md transition-shadow"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.08 }}
+            className="border-t border-border py-6"
           >
-            <div className="text-3xl mb-3">{f.icon}</div>
-            <h3 className="font-heading text-lg font-semibold text-navy mb-1">{f.title}</h3>
-            <p className="text-muted-foreground text-sm">{f.desc}</p>
+            <h3 className="text-base font-bold uppercase tracking-wide text-foreground mb-2">{f.title}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -117,57 +242,61 @@ const WhyPaksha = () => (
   </section>
 );
 
-const WaitlistBanner = () => {
+/* ───── WAITLIST CTA ───── */
+const WaitlistSection = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <section id="waitlist" className="py-20 bg-gradient-to-r from-navy to-river">
-      <div className="container mx-auto px-4 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        >
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-            Paksha is launching soon in Srinagar
-          </h2>
-          {submitted ? (
-            <p className="text-glacier text-lg">🎉 You're on the list! We'll notify you on launch.</p>
-          ) : (
-            <>
-              <p className="text-glacier mb-8">Be the first to ride. We'll notify you on launch.</p>
-              <form
-                onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
-                className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+    <section id="waitlist" className="section-padding bg-accent">
+      <div className="container mx-auto px-4 max-w-2xl">
+        <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-accent-foreground/70 mb-4">— LAUNCHING SOON IN SRINAGAR</p>
+        <h2 className="text-4xl md:text-6xl lg:text-7xl font-[800] uppercase tracking-tight text-accent-foreground leading-[0.95] mb-6">
+          BE FIRST<br />TO RIDE.
+        </h2>
+        {submitted ? (
+          <p className="text-accent-foreground text-lg font-medium">🎉 You're on the list. We'll be in touch.</p>
+        ) : (
+          <>
+            <p className="text-accent-foreground/80 text-base mb-8 max-w-md">
+              Drop your email. We'll tell you the day Paksha goes live. Nothing else.
+            </p>
+            <form
+              onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+              className="flex flex-col sm:flex-row gap-3 max-w-lg"
+            >
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 border-2 border-accent-foreground text-accent-foreground bg-transparent placeholder:text-accent-foreground/50 text-base focus:outline-none rounded-sm"
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 bg-accent-foreground text-accent font-bold text-sm uppercase tracking-wide hover:opacity-90 transition-opacity rounded-sm whitespace-nowrap"
               >
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-lg text-sm bg-snow text-navy focus:outline-none focus:ring-2 focus:ring-accent"
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-3 rounded-lg bg-accent text-accent-foreground font-medium text-sm hover:opacity-90 transition-opacity"
-                >
-                  Join Waitlist
-                </button>
-              </form>
-            </>
-          )}
-        </motion.div>
+                Notify Me →
+              </button>
+            </form>
+            <p className="text-xs text-accent-foreground/60 mt-4">No spam. Just one message when we launch.</p>
+          </>
+        )}
       </div>
     </section>
   );
 };
 
+/* ───── PAGE ───── */
 const Index = () => (
   <div>
     <HeroSection />
+    <StatsSection />
+    <AppSection />
     <HowItWorks />
     <WhyPaksha />
-    <WaitlistBanner />
+    <WaitlistSection />
     <Footer />
   </div>
 );
