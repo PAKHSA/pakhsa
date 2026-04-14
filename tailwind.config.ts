@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        heading: ['"Playfair Display"', 'serif'],
+        body: ['"Outfit"', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +51,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        earth: {
+          DEFAULT: "hsl(var(--earth))",
+          foreground: "hsl(var(--earth-foreground))",
+        },
+        bark: {
+          DEFAULT: "hsl(var(--bark))",
+          foreground: "hsl(var(--bark-foreground))",
+        },
+        glacier: "hsl(var(--glacier))",
+        river: "hsl(var(--river))",
+        snow: "hsl(var(--snow))",
+        navy: "hsl(var(--navy))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -65,25 +81,34 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-12px)" },
+        },
+        "pulse-ring": {
+          "0%": { transform: "scale(0.5)", opacity: "0.8" },
+          "100%": { transform: "scale(2.5)", opacity: "0" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-up": "fade-up 0.6s ease-out forwards",
+        "float": "float 4s ease-in-out infinite",
+        "float-delayed": "float 4s ease-in-out 1s infinite",
+        "float-delayed-2": "float 4s ease-in-out 2s infinite",
+        "pulse-ring": "pulse-ring 1.5s ease-out infinite",
       },
     },
   },
