@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { PhoneMockup, BookingScreen, MatchingScreen, EarningsScreen } from "@/components/PhoneMockup";
 import Footer from "@/components/Footer";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 /* ───── HERO ───── */
 const heroWords = ["RIDE", "THE", "VALLEY."];
@@ -50,7 +50,7 @@ const HeroSection = () => (
             transition={{ delay: 0.5 }}
             className="flex flex-wrap gap-4"
           >
-            <a href="#waitlist" className="px-6 py-3 bg-accent text-accent-foreground font-bold text-sm uppercase tracking-wide rounded-sm hover:opacity-90 transition-opacity">
+            <a href="https://tally.so/r/MeJBbA" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-accent text-accent-foreground font-bold text-sm uppercase tracking-wide rounded-sm hover:opacity-90 transition-opacity">
               Join Waitlist →
             </a>
             <a href="#how" className="px-6 py-3 border border-foreground/30 text-foreground font-medium text-sm uppercase tracking-wide rounded-sm hover:bg-foreground/5 transition-colors">
@@ -243,50 +243,28 @@ const WhyPaksha = () => (
 );
 
 /* ───── WAITLIST CTA ───── */
-const WaitlistSection = () => {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  return (
-    <section id="waitlist" className="section-padding bg-accent">
-      <div className="container mx-auto px-4 max-w-2xl">
-        <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-accent-foreground/70 mb-4">— LAUNCHING SOON IN SRINAGAR</p>
-        <h2 className="text-4xl md:text-6xl lg:text-7xl font-[800] uppercase tracking-tight text-accent-foreground leading-[0.95] mb-6">
-          BE FIRST<br />TO RIDE.
-        </h2>
-        {submitted ? (
-          <p className="text-accent-foreground text-lg font-medium">🎉 You're on the list. We'll be in touch.</p>
-        ) : (
-          <>
-            <p className="text-accent-foreground/80 text-base mb-8 max-w-md">
-              Drop your email. We'll tell you the day Paksha goes live. Nothing else.
-            </p>
-            <form
-              onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
-              className="flex flex-col sm:flex-row gap-3 max-w-lg"
-            >
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border-2 border-accent-foreground text-accent-foreground bg-transparent placeholder:text-accent-foreground/50 text-base focus:outline-none rounded-sm"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 bg-accent-foreground text-accent font-bold text-sm uppercase tracking-wide hover:opacity-90 transition-opacity rounded-sm whitespace-nowrap"
-              >
-                Notify Me →
-              </button>
-            </form>
-            <p className="text-xs text-accent-foreground/60 mt-4">No spam. Just one message when we launch.</p>
-          </>
-        )}
-      </div>
-    </section>
-  );
-};
+const WaitlistSection = () => (
+  <section id="waitlist" className="section-padding bg-accent">
+    <div className="container mx-auto px-4 max-w-2xl">
+      <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-accent-foreground/70 mb-4">— LAUNCHING SOON IN SRINAGAR</p>
+      <h2 className="text-4xl md:text-6xl lg:text-7xl font-[800] uppercase tracking-tight text-accent-foreground leading-[0.95] mb-6">
+        BE FIRST<br />TO RIDE.
+      </h2>
+      <p className="text-accent-foreground/80 text-base mb-8 max-w-md">
+        Drop your details. We'll reach out the day Paksha goes live.
+      </p>
+      <a
+        href="https://tally.so/r/MeJBbA"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center px-8 py-4 bg-accent-foreground text-accent font-bold text-sm uppercase tracking-wide rounded-sm hover:opacity-90 transition-opacity"
+      >
+        Join the Waitlist →
+      </a>
+      <p className="text-xs text-accent-foreground/60 mt-4">No spam. Just one message when we launch.</p>
+    </div>
+  </section>
+);
 
 /* ───── PAGE ───── */
 const Index = () => (

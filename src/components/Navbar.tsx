@@ -38,7 +38,9 @@ const Navbar = () => {
 
         <div className="hidden md:block">
           <a
-            href="#waitlist"
+            href="https://tally.so/r/MeJBbA"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center px-5 py-2 text-[13px] font-bold uppercase tracking-wide rounded bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
           >
             Join Waitlist
@@ -78,7 +80,9 @@ const Navbar = () => {
                 </Link>
               ))}
               <a
-                href="#waitlist"
+                href="https://tally.so/r/MeJBbA"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
                 className="inline-flex items-center justify-center px-5 py-2 text-[13px] font-bold uppercase rounded bg-accent text-accent-foreground"
               >
