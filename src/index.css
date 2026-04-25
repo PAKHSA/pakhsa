@@ -54,9 +54,15 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
     font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -64,6 +70,16 @@
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background-color: hsl(37 78% 52% / 0.3);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(37 78% 52%);
+    outline-offset: 2px;
   }
 }
 
@@ -75,6 +91,29 @@
   .section-padding {
     @apply py-[80px] md:py-[120px] lg:py-[160px];
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
 }
 
 @keyframes marquee {
@@ -84,4 +123,19 @@
 
 .animate-marquee {
   animation: marquee 30s linear infinite;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
 }

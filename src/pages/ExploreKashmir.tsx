@@ -408,6 +408,17 @@ const glossary = [
 const ExploreKashmir = () => {
   const [agencyModalOpen, setAgencyModalOpen] = useState(false);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setAgencyModalOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
   <div className="overflow-x-hidden">
     <PakshaModal />
@@ -1017,7 +1028,9 @@ const ExploreKashmir = () => {
         >
           <Search className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
           <span className="text-muted-foreground group-hover:text-foreground transition-colors">Search verified agencies...</span>
-          <kbd className="hidden sm:inline-flex ml-auto px-2 py-1 text-xs bg-muted rounded text-muted-foreground">Click to search</kbd>
+          <kbd className="hidden sm:inline-flex ml-auto items-center gap-1 px-2 py-1 text-xs bg-muted rounded text-muted-foreground font-mono">
+            <span className="text-[10px]">⌘</span>K
+          </kbd>
         </motion.button>
 
         {/* Featured agencies grid */}
