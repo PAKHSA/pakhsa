@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo, useRef } from "react";
-import { Search, Star, MapPin, Phone, Mail, X, ChevronDown, Navigation, Mountain, TreePine, Waves, Snowflake, Sun, Coffee } from "lucide-react";
+import { Search, Star, MapPin, Phone, Mail, X, ChevronDown, Navigation, Mountain, TreePine, Waves, Snowflake, Sun, Coffee, ExternalLink, Globe } from "lucide-react";
 import Footer from "@/components/Footer";
 import PakshaModal from "@/components/PakshaModal";
 
@@ -10,15 +10,16 @@ const sectionIcons = ["🗺️", "🏠", "🏍️", "🍽️", "🏢"];
 
 /* ───── AGENCIES DATA ───── */
 const agencies = [
-  { rank: 1, name: "Aashish Tour & Travel", rating: 4.6, reviews: 186, owner: "Hamid Abbas Ganie", location: "Alamgari Bazar, near Health centre, Srinagar", phone: "7006016423", email: "travels07@yahoo.com" },
+  { rank: 1, name: "Aashish Tour & Travel", rating: 4.6, reviews: 186, owner: "Hamid Abbas Ganie", location: "Alamgari Bazar, near Health centre, Srinagar", phone: "7006016423", email: "travels07@yahoo.com", tripadvisor: "https://tripadvisor.com/Attraction_Review-g297623-d15756833-Reviews-Aashish_Tour_And_Travels-Srinagar_Srinagar_District.html", facebook: "https://facebook.com/AashishTourTravelsKashmir" },
   { rank: 3, name: "Ahlan India Tour & Travels", rating: 4.8, reviews: 159, owner: "Mr.Mohammed Mouzum Bazaz", location: "Upper Sathu Barbarshah, Srinagar", phone: "9797012372", email: "ahlanindiatours@gmail.com" },
-  { rank: 31, name: "Poise Travel & Tourism", rating: 4.7, reviews: 238, owner: "Suhail Bhat", location: "Kukar Bazar, Amira Kadal, Srinagar", phone: "9796355555", email: "hello@poisetravels.in" },
+  { rank: 31, name: "Poise Travel & Tourism", rating: 4.7, reviews: 238, owner: "Suhail Bhat", location: "Kukar Bazar, Amira Kadal, Srinagar", phone: "9796355555", email: "hello@poisetravels.in", website: "https://poisetravels.in" },
   { rank: 32, name: "R.A. Holidays", rating: 4.6, reviews: 204, owner: "Ms.Shazia Bashir", location: "Nai Sadak, Habba Kadal, Srinagar", phone: "9797449999", email: "raholidays786@gmail.com" },
-  { rank: 51, name: "Kashmir Dream Designer", rating: 4.8, reviews: 271, owner: "", location: "Srinagar", phone: "", email: "" },
-  { rank: 52, name: "Kashmir Yatra Tours and Travels", rating: 4.7, reviews: 287, owner: "Mr. Adil Qayoom Mir", location: "Rajbagh, Near Hurriyat Office, Srinagar", phone: "9469000081", email: "kashmiryatra@hotmail.com" },
-  { rank: 61, name: "Cranberry Tour & Travels", rating: 4.8, reviews: 109, owner: "Mr. Sadiq Khursheed", location: "Ikrajpora, Jawahar Nagar, Srinagar", phone: "9596111155", email: "sadiqbhat3@gmail.com" },
-  { rank: 63, name: "Superior Tour & Travels", rating: 5.0, reviews: 102, owner: "Mr. Bilal Ahmad Kambay", location: "Shalimar Garden Road, Tailbal, Srinagar", phone: "7889508253", email: "billukambay098@gmail.com" },
-  { rank: 68, name: "Fine Fare Holidays", rating: 4.9, reviews: 205, owner: "", location: "Srinagar", phone: "", email: "" },
+  { rank: 51, name: "Kashmir Dream Designer", rating: 4.8, reviews: 271, owner: "", location: "Srinagar", phone: "", email: "", website: "https://kashmirdreamdesigner.com/", facebook: "https://facebook.com/kashmirdreamdesigners" },
+  { rank: 52, name: "Kashmir Yatra Tours and Travels", rating: 4.7, reviews: 287, owner: "Mr. Adil Qayoom Mir", location: "Rajbagh, Near Hurriyat Office, Srinagar", phone: "9469000081", email: "kashmiryatra@hotmail.com", tripadvisor: "https://tripadvisor.com/TravelAgency_Review-g297623-d4306179-Kashmir_Yatra_Tours_and_Travels-Srinagar_Srinagar_District.html" },
+  { rank: 61, name: "Cranberry Tour & Travels", rating: 4.8, reviews: 109, owner: "Mr. Sadiq Khursheed", location: "Ikrajpora, Jawahar Nagar, Srinagar", phone: "9596111155", email: "sadiqbhat3@gmail.com", website: "https://cranberrytours.com/", facebook: "https://facebook.com/CranberryTours", tripadvisor: "https://tripadvisor.com/TravelAgency_Review-g297623-d13484313-Cranberry_Tours_Srinagar-Srinagar_Srinagar_District.html" },
+  { rank: 63, name: "Superior Tour & Travels", rating: 5.0, reviews: 102, owner: "Mr. Bilal Ahmad Kambay", location: "Shalimar Garden Road, Tailbal, Srinagar", phone: "7889508253", email: "billukambay098@gmail.com", tripadvisor: "https://tripadvisor.com/TravelAgency_Review-g297623-d13783815-Superior_Tours_Travels-Srinagar_Srinagar_District.html" },
+  { rank: 68, name: "Fine Fare Holidays", rating: 4.9, reviews: 205, owner: "", location: "Srinagar", phone: "", email: "", tripadvisor: "https://tripadvisor.com/TravelAgency_Review-g297623-d15786749-Fine_Fare_Holidays-Srinagar_Srinagar_District.html" },
+  { rank: 70, name: "A-Star Tour & Travels", rating: 4.7, reviews: 148, owner: "", location: "Srinagar", phone: "", email: "", website: "https://a-startours.business.site/", tripadvisor: "https://tripadvisor.com/TravelAgency_Review-g297623-d15785887-A-Star_Travels-Srinagar_Srinagar_District.html" },
   { rank: 75, name: "Hello Kashmir Tour & Travels", rating: 5.0, reviews: 135, owner: "Ms.Ulfat Ahad", location: "Kohan Khan, Dalgate, near Metor Hotel, Srinagar", phone: "9419009409", email: "HELLOKASHMIR124@GMAIL.COM" },
   { rank: 82, name: "Khidmat-i-Safar", rating: 4.9, reviews: 655, owner: "Mr.Parvaiz Ahmad Wani", location: "Natipora Punjab National Bank Building, Srinagar", phone: "7780954196", email: "KHIDMATISAFAR@GMAIL.COM" },
   { rank: 96, name: "Golden Wheels Tour & Travels", rating: 5.0, reviews: 173, owner: "Mr.Yawar Abbas Malik & Mr.Shabeer Ahmad Rather", location: "Babademb Road near Football Stadium Srinagar", phone: "8715000953", email: "goldentravels262@gmail.com" },
@@ -240,6 +241,51 @@ const AgencySearchModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                         <Mail className="w-4 h-4 text-muted-foreground" />
                         <span className="text-foreground">{selectedAgency.email.toLowerCase()}</span>
                       </a>
+                    )}
+                    
+                    {/* External Links */}
+                    {(selectedAgency.website || selectedAgency.tripadvisor || selectedAgency.facebook) && (
+                      <div className="pt-3 mt-3 border-t border-border">
+                        <p className="text-xs text-muted-foreground mb-2">External Links</p>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedAgency.website && (
+                            <a 
+                              href={selectedAgency.website} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 text-accent text-sm rounded-full hover:bg-accent/20 transition-colors"
+                            >
+                              <Globe className="w-3.5 h-3.5" />
+                              Website
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                          {selectedAgency.tripadvisor && (
+                            <a 
+                              href={selectedAgency.tripadvisor} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/10 text-green-600 text-sm rounded-full hover:bg-green-500/20 transition-colors"
+                            >
+                              <Star className="w-3.5 h-3.5" />
+                              TripAdvisor
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                          {selectedAgency.facebook && (
+                            <a 
+                              href={selectedAgency.facebook} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 text-blue-600 text-sm rounded-full hover:bg-blue-500/20 transition-colors"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                              Facebook
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </motion.div>
