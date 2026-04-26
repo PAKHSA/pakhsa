@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { label: "HOME", path: "/" },
-  { label: "EXPLORE KASHMIR", path: "/explore" },
+  { label: "ITINERARY", path: "/explore#itinerary" },
+  { label: "STAY", path: "/explore#stay" },
+  { label: "BIKES", path: "/explore#bikes" },
+  { label: "FOOD", path: "/explore#food" },
+  { label: "TOUR & TRAVELS", path: "/explore#agencies" },
 ];
 
 const Navbar = () => {
@@ -26,7 +30,7 @@ const Navbar = () => {
               key={link.path}
               to={link.path}
               className={`text-[13px] uppercase tracking-[0.05em] font-medium transition-colors ${
-                location.pathname === link.path
+                (location.pathname === link.path || location.pathname + location.hash === link.path)
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground"
               }`}
@@ -73,7 +77,7 @@ const Navbar = () => {
                   to={link.path}
                   onClick={() => setMobileOpen(false)}
                   className={`text-[13px] uppercase tracking-wide font-medium py-2 ${
-                    location.pathname === link.path ? "text-foreground" : "text-muted-foreground"
+                    (location.pathname === link.path || location.pathname + location.hash === link.path) ? "text-foreground" : "text-muted-foreground"
                   }`}
                 >
                   {link.label}

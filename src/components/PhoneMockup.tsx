@@ -55,7 +55,7 @@ export const BookingScreen = () => (
 
 export const MatchingScreen = () => (
   <div className="h-[380px] p-4 text-foreground text-xs flex flex-col items-center justify-center">
-    <p className="text-lg font-[800] uppercase tracking-tight mb-6 text-center">Finding Your Driver</p>
+    <p className="text-lg font-[800] uppercase tracking-tight mb-6 text-center">Finding Your Host</p>
     <div className="relative w-24 h-24 mb-6">
       <div className="absolute inset-0 rounded-full border-2 border-accent/30 animate-pulse-ring" />
       <div className="absolute inset-2 rounded-full border-2 border-accent/50 animate-pulse-ring" style={{ animationDelay: "0.3s" }} />
@@ -74,8 +74,8 @@ export const MatchingScreen = () => (
 
 export const EarningsScreen = () => (
   <div className="h-[380px] p-4 text-foreground text-xs flex flex-col">
-    <p className="eyebrow mb-2">TODAY'S EARNINGS</p>
-    <p className="text-3xl font-[800] text-accent mb-1">₹1,240</p>
+    <p className="eyebrow mb-2">RIDE COMPLETED</p>
+    <p className="text-3xl font-[800] text-accent mb-1">₹340</p>
     <p className="text-muted-foreground text-[10px] mb-4">8 TRIPS COMPLETED</p>
     <div className="grid grid-cols-2 gap-2 mb-4">
       {[

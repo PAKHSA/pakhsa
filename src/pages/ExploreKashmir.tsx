@@ -1,12 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { Search, Star, MapPin, Phone, Mail, X, ChevronDown, Navigation, Mountain, TreePine, Waves, Snowflake, Sun, Coffee, ExternalLink, Globe } from "lucide-react";
 import Footer from "@/components/Footer";
 import PakshaModal from "@/components/PakshaModal";
 import ItineraryRoadmap from "@/components/ItineraryRoadmap";
 
 const sectionIds = ["itinerary", "stay", "bikes", "food", "agencies"];
-const sectionLabels = ["Itinerary", "Stay", "Bikes", "Food", "Agencies"];
+const sectionLabels = ["Itinerary", "Stay", "Bikes", "Food", "Tour & Travels"];
 const sectionIcons = ["🗺️", "🏠", "🏍️", "🍽️", "🏢"];
 
 /* ───── AGENCIES DATA ───── */
@@ -128,16 +129,22 @@ const SectionNav = () => {
 };
 
 /* ───── AGENCY SEARCH MODAL ───── */
-const AgencySearchModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: boolean; onClose: () => void; initialAgency?: typeof agencies[0] | null }) => {
   const [search, setSearch] = useState("");
-  const [selectedAgency, setSelectedAgency] = useState<typeof agencies[0] | null>(null);
+  const [selectedAgency, setSelectedAgency] = useState<typeof agencies[0] | null>(initialAgency);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
+    if (isOpen) {
+      setSelectedAgency(initialAgency);
+      if (!initialAgency && inputRef.current) {
+        inputRef.current.focus();
+      }
+    } else {
+      setSearch("");
+      setSelectedAgency(null);
     }
-  }, [isOpen]);
+  }, [isOpen, initialAgency]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -153,7 +160,9 @@ const AgencySearchModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     return agencies.filter(
       a => a.name.toLowerCase().includes(term) || 
            a.location.toLowerCase().includes(term) ||
-           a.owner.toLowerCase().includes(term)
+           a.owner.toLowerCase().includes(term) ||
+           (a.phone && a.phone.includes(term)) ||
+           (a.email && a.email.toLowerCase().includes(term))
     );
   }, [search]);
 
@@ -182,7 +191,7 @@ const AgencySearchModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Search verified travel agencies..."
+                placeholder="Search verified tour & travels..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
@@ -294,7 +303,7 @@ const AgencySearchModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                 <div className="py-2">
                   {filteredAgencies.length === 0 ? (
                     <div className="px-4 py-8 text-center text-muted-foreground">
-                      No agencies found matching "{search}"
+                      No tour & travels found matching "{search}"
                     </div>
                   ) : (
                     filteredAgencies.map((agency, i) => (
@@ -327,7 +336,7 @@ const AgencySearchModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
             {/* Footer */}
             <div className="px-4 py-3 border-t border-border bg-muted/30">
               <p className="text-xs text-muted-foreground text-center">
-                {agencies.length} verified agencies • All PVC verified by J&K Tourism
+                {agencies.length} verified tour & travels • All PVC verified by J&K Tourism
               </p>
             </div>
           </motion.div>
@@ -454,11 +463,30 @@ const glossary = [
 /* ───── PAGE ───── */
 const ExploreKashmir = () => {
   const [agencyModalOpen, setAgencyModalOpen] = useState(false);
+  const [selectedAgencyForModal, setSelectedAgencyForModal] = useState<typeof agencies[0] | null>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.substring(1);
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => {
+          const offset = 140;
+          const y = el.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }, 100);
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [location]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
+        setSelectedAgencyForModal(null);
         setAgencyModalOpen(true);
       }
     };
@@ -469,7 +497,7 @@ const ExploreKashmir = () => {
   return (
   <div className="overflow-x-hidden">
     <PakshaModal />
-    <AgencySearchModal isOpen={agencyModalOpen} onClose={() => setAgencyModalOpen(false)} />
+    <AgencySearchModal isOpen={agencyModalOpen} onClose={() => setAgencyModalOpen(false)} initialAgency={selectedAgencyForModal} />
 
     {/* Hero - Compact with quick actions */}
     <section className="relative min-h-[60vh] flex items-center pt-16">
@@ -492,7 +520,7 @@ const ExploreKashmir = () => {
             EXPLORE THE<br />MOST BEAUTIFUL<br />PLACE ON EARTH.
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-6 leading-relaxed">
-            Everything you need for your Kashmir trip — itineraries, stays, bikes, food, and verified travel agencies.
+            Everything you need for your Kashmir trip — itineraries, stays, bikes, food, and verified tour & travels.
           </p>
           
           {/* Quick scroll hint */}
@@ -626,7 +654,7 @@ const ExploreKashmir = () => {
           viewport={{ once: true }}
         >
           <p className="text-sm text-center text-foreground">
-            <span className="font-bold">PAKSHA TIP:</span> All these routes are covered by Paksha drivers. Book one for the day and enjoy a guided tour of Kashmir.
+            <span className="font-bold">PAKSHA TIP:</span> All these routes are covered by Paksha hosts. Book one for the day and enjoy a guided tour of Kashmir.
           </p>
         </motion.div>
       </div>
@@ -895,18 +923,18 @@ const ExploreKashmir = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="eyebrow mb-4">— VERIFIED TRAVEL AGENCIES</p>
+          <p className="eyebrow mb-4">— VERIFIED TOUR & TRAVELS</p>
           <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-3 leading-[1.1]">
             BOOK WITH TRUST.
           </h2>
           <p className="text-muted-foreground text-base mb-8 max-w-lg">
-            {agencies.length} agencies verified by J&K Tourism. All rated 4.6+ on Google with 100+ reviews.
+            {agencies.length} tour & travels verified by J&K Tourism. All rated 4.6+ on Google with 100+ reviews.
           </p>
         </motion.div>
 
         {/* Quick search button */}
         <motion.button
-          onClick={() => setAgencyModalOpen(true)}
+          onClick={() => { setSelectedAgencyForModal(null); setAgencyModalOpen(true); }}
           className="w-full max-w-xl flex items-center gap-3 px-4 py-4 bg-card border border-border rounded-lg hover:border-accent/50 transition-all group mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -915,7 +943,7 @@ const ExploreKashmir = () => {
           whileTap={{ scale: 0.99 }}
         >
           <Search className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
-          <span className="text-muted-foreground group-hover:text-foreground transition-colors">Search verified agencies...</span>
+          <span className="text-muted-foreground group-hover:text-foreground transition-colors">Search verified tour & travels...</span>
           <kbd className="hidden sm:inline-flex ml-auto items-center gap-1 px-2 py-1 text-xs bg-muted rounded text-muted-foreground font-mono">
             <span className="text-[10px]">⌘</span>K
           </kbd>
@@ -934,7 +962,7 @@ const ExploreKashmir = () => {
               key={agency.rank}
               variants={fadeIn}
               whileHover={{ y: -4 }}
-              onClick={() => setAgencyModalOpen(true)}
+              onClick={() => { setSelectedAgencyForModal(agency); setAgencyModalOpen(true); }}
               className="p-5 border border-border rounded-lg hover:border-accent/50 bg-card/50 cursor-pointer transition-all group"
             >
               <div className="flex items-start justify-between mb-3">
@@ -963,10 +991,10 @@ const ExploreKashmir = () => {
           viewport={{ once: true }}
         >
           <button
-            onClick={() => setAgencyModalOpen(true)}
+            onClick={() => { setSelectedAgencyForModal(null); setAgencyModalOpen(true); }}
             className="inline-flex items-center gap-2 px-6 py-3 border border-foreground/30 text-foreground font-medium text-sm uppercase tracking-wide rounded-sm hover:bg-foreground/5 transition-colors"
           >
-            View all {agencies.length} agencies
+            View all {agencies.length} tour & travels
           </button>
         </motion.div>
       </div>

@@ -46,7 +46,7 @@ const Footer = () => {
                 PAKSHA
               </Link>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                Kashmir's first bike taxi app. Connecting travelers with trusted local drivers since 2025.
+                Connecting travelers with trusted local hosts since 2025.
               </p>
               <div className="flex gap-3 mt-4">
                 <a 

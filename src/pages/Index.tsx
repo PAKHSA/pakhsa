@@ -21,7 +21,6 @@ const HeroSection = () => (
     <div className="container mx-auto px-4 relative z-10 flex-1 flex flex-col justify-center">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
         <div>
-          <p className="eyebrow mb-6">— KASHMIR'S FIRST BIKE TAXI APP</p>
           <h1 className="mb-6">
             {heroWords.map((word, i) => (
               <motion.span
@@ -42,7 +41,7 @@ const HeroSection = () => (
             transition={{ delay: 0.4 }}
             className="text-muted-foreground text-base md:text-lg max-w-[480px] mb-8 leading-relaxed"
           >
-            Paksha connects you with trusted local drivers across Srinagar and Kashmir. Built for mountain terrain. Launching soon.
+            Paksha connects you with trusted local hosts across Srinagar and Kashmir. Built for mountain terrain. Launching soon.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -78,7 +77,7 @@ const HeroSection = () => (
       <div className="animate-marquee flex whitespace-nowrap">
         {Array.from({ length: 4 }).map((_, i) => (
           <span key={i} className="text-accent-foreground text-sm font-bold uppercase tracking-widest mx-4">
-            SRINAGAR · GULMARG · PAHALGAM · SONAMARG · DAL LAKE · DOODHPATHRI · LAL CHOWK · PVC VERIFIED DRIVERS ·&nbsp;
+            SRINAGAR · GULMARG · PAHALGAM · SONAMARG · DAL LAKE · DOODHPATHRI · LAL CHOWK · PVC VERIFIED HOSTS ·&nbsp;
           </span>
         ))}
       </div>
@@ -110,7 +109,7 @@ const CountUp = ({ target, suffix = "" }: { target: number; suffix?: string }) =
 
 const stats = [
   { value: 3, suffix: " MIN", label: "Average pickup time" },
-  { value: 100, suffix: "%", label: "PVC Verified drivers" },
+  { value: 100, suffix: "%", label: "PVC Verified hosts" },
   { value: 0, suffix: "", label: "Surge pricing ever", display: "₹0" },
   { value: 7, suffix: "", label: "Valleys we operate in" },
 ];
@@ -143,13 +142,13 @@ const AppSection = () => (
             DESIGNED FOR<br />KASHMIR.
           </h2>
           <p className="text-muted-foreground text-base mb-10 max-w-lg leading-relaxed">
-            No confusing UX. No unnecessary features. Just open the app, set your destination, and a local driver comes to you in minutes.
+            No confusing UX. No unnecessary features. Just open the app, set your destination, and a local host comes to you in minutes.
           </p>
           <div className="space-y-0">
             {[
               "Book a ride in 30 seconds",
-              "Track your driver live on map",
-              "Pay fixed fares, no surprises",
+              "Track your host live on map",
+              "Pay shared ride money, no surprises",
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-4 py-4 border-t border-border">
                 <span className="text-accent font-bold text-lg">0{i + 1}</span>
@@ -177,9 +176,9 @@ const AppSection = () => (
 
 /* ───── HOW IT WORKS ───── */
 const howSteps = [
-  { num: "01", title: "SET YOUR DESTINATION", desc: "Enter pickup & drop anywhere in Kashmir. The app shows drivers near you in real time." },
-  { num: "02", title: "MATCH WITH A LOCAL", desc: "Every Paksha driver is PVC-verified by J&K Police. You see their name, bike, and rating before confirming." },
-  { num: "03", title: "RIDE & EXPLORE", desc: "Your driver knows every shortcut, viewpoint, and chai dhaba. Travel like a local." },
+  { num: "01", title: "SET YOUR DESTINATION", desc: "Enter pickup & drop anywhere in Kashmir. The app shows hosts near you in real time." },
+  { num: "02", title: "MATCH WITH A LOCAL", desc: "Every Paksha host is PVC-verified by J&K Police. You see their name, bike, and rating before confirming." },
+  { num: "03", title: "RIDE & EXPLORE", desc: "Your host knows every shortcut, viewpoint, and chai dhaba. Travel like a local." },
 ];
 
 const HowItWorks = () => (
@@ -208,12 +207,12 @@ const HowItWorks = () => (
 
 /* ───── WHY PAKSHA ───── */
 const features = [
-  { title: "PVC VERIFIED DRIVERS", desc: "Every driver background-checked by J&K Police Verification Certificate before joining." },
-  { title: "FIXED FARES ONLY", desc: "No surge pricing. Ever. You see the price before you book." },
-  { title: "LOCAL KNOWLEDGE", desc: "Our drivers know Kashmir — the routes, the weather, the best stops." },
+  { title: "PVC VERIFIED HOSTS", desc: "Every host background-checked by J&K Police Verification Certificate before joining." },
+  { title: "SHARED RIDE MONEY ONLY", desc: "No surge pricing. Ever. You see the shared cost before you book." },
+  { title: "LOCAL KNOWLEDGE", desc: "Our hosts know Kashmir — the routes, the weather, the best stops." },
   { title: "LOW CONNECTIVITY MODE", desc: "Works on 2G. Built for mountain terrain where signal drops." },
-  { title: "DRIVER-FIRST EARNINGS", desc: "Drivers keep the majority. We take the minimum. Fairness is in our DNA." },
-  { title: "WOMEN SAFETY FEATURE", desc: "Option to request a female driver. Emergency SOS one tap away." },
+  { title: "HOST-FIRST EARNINGS", desc: "Hosts keep the majority. We take the minimum. Fairness is in our DNA." },
+  { title: "WOMEN SAFETY FEATURE", desc: "Option to request a female host. Emergency SOS one tap away." },
 ];
 
 const WhyPaksha = () => (
