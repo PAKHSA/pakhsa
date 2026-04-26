@@ -13,10 +13,10 @@ const HeroSection = () => (
       className="absolute inset-0 bg-cover bg-center"
       style={{
         backgroundImage: "url('https://images.unsplash.com/photo-1597074866923-dc0589150358?w=1920&q=80')",
-        opacity: 0.25,
+        opacity: 0.6,
       }}
     />
-    <div className="absolute inset-0 bg-background/75" />
+    <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/55 to-background/85" />
 
     <div className="container mx-auto px-4 relative z-10 flex-1 flex flex-col justify-center">
       <div className="grid lg:grid-cols-2 gap-16 items-center">

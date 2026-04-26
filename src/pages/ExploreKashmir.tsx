@@ -476,10 +476,10 @@ const ExploreKashmir = () => {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Pahalgam_Valley.jpg/3840px-Pahalgam_Valley.jpg')",
-          opacity: 0.2,
+          opacity: 0.55,
         }}
       />
-      <div className="absolute inset-0 bg-background/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/55 to-background/85" />
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -1016,7 +1016,7 @@ const ExploreKashmir = () => {
         </motion.div>
 
         {/* Glossary - Collapsible */}
-        <motion.details 
+        {/* <motion.details 
           className="mt-12 max-w-3xl group"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -1041,7 +1041,7 @@ const ExploreKashmir = () => {
               </div>
             ))}
           </motion.div>
-        </motion.details>
+        </motion.details> */}
       </div>
     </section>
 
