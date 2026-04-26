@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { Search, Star, MapPin, Phone, Mail, X, ChevronDown, Navigation, Mountain, TreePine, Waves, Snowflake, Sun, Coffee, ExternalLink, Globe } from "lucide-react";
 import Footer from "@/components/Footer";
 import PakshaModal from "@/components/PakshaModal";
+import ItineraryRoadmap from "@/components/ItineraryRoadmap";
 
 const sectionIds = ["itinerary", "stay", "bikes", "food", "agencies"];
 const sectionLabels = ["Itinerary", "Stay", "Bikes", "Food", "Agencies"];
@@ -528,168 +529,9 @@ const ExploreKashmir = () => {
           </p>
         </motion.div>
 
-        {/* Desktop: Image-based roadmap */}
-        <div className="hidden lg:block relative">
-          {/* SVG Road Path */}
-          <svg className="absolute top-1/2 left-0 w-full h-20 -translate-y-1/2 z-0" viewBox="0 0 1200 80" preserveAspectRatio="none">
-            <motion.path
-              d="M0,40 Q100,20 200,40 T400,40 T600,40 T800,40 T1000,40 T1200,40"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeDasharray="8,8"
-              className="text-accent/30"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 2, ease: "easeInOut" }}
-            />
-          </svg>
-          
-          <div className="grid grid-cols-6 gap-4 relative z-10">
-            {itinerary.map((stop, i) => {
-              const Icon = stop.icon;
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.15 }}
-                  className="group"
-                >
-                  {/* Image Card */}
-                  <motion.div 
-                    className="relative overflow-hidden rounded-2xl border border-border bg-card cursor-pointer"
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {/* Image */}
-                    <div className="relative h-40 overflow-hidden">
-                      <img 
-                        src={stop.image} 
-                        alt={stop.place}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      
-                      {/* Day badge */}
-                      <div className="absolute top-3 left-3">
-                        <span className={`px-3 py-1.5 bg-gradient-to-r ${stop.color} text-white text-xs font-bold rounded-full shadow-lg`}>
-                          Day {stop.day}
-                        </span>
-                      </div>
-                      
-                      {/* Icon */}
-                      <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <Icon className="w-4 h-4 text-white" />
-                      </div>
-                      
-                      {/* Place name on image */}
-                      <div className="absolute bottom-3 left-3 right-3">
-                        <h3 className="text-lg font-[800] uppercase text-white leading-tight">
-                          {stop.place}
-                        </h3>
-                        <p className="text-xs text-white/80">{stop.subtitle}</p>
-                      </div>
-                    </div>
-                    
-                    {/* Content below image */}
-                    <div className="p-4">
-                      {/* Rating */}
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                          <span className="font-bold text-foreground">{stop.rating}</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground">({stop.reviews.toLocaleString()})</span>
-                        <span className="px-1.5 py-0.5 bg-green-500/10 text-green-500 text-[9px] font-medium rounded">VERIFIED</span>
-                      </div>
-                      
-                      {/* Highlights */}
-                      <div className="flex flex-wrap gap-1">
-                        {stop.highlights.slice(0, 2).map((h, j) => (
-                          <span key={j} className="text-[10px] px-2 py-0.5 bg-muted rounded-full text-muted-foreground">
-                            {h}
-                          </span>
-                        ))}
-                      </div>
-                      
-                      {/* Distance */}
-                      <div className="mt-3 pt-3 border-t border-border flex items-center gap-1 text-xs text-muted-foreground">
-                        <Navigation className="w-3 h-3" />
-                        <span>{stop.distance}</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                  
-                  {/* Connection arrow (except last) */}
-                  {i < itinerary.length - 1 && (
-                    <motion.div 
-                      className="hidden lg:flex absolute top-1/2 -right-2 z-20 w-4 h-4 items-center justify-center"
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + 0.3 }}
-                    >
-                      <div className="w-3 h-3 rotate-45 border-t-2 border-r-2 border-accent" />
-                    </motion.div>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Tablet: 3 column grid */}
-        <div className="hidden md:grid lg:hidden grid-cols-3 gap-4">
-          {itinerary.map((stop, i) => {
-            const Icon = stop.icon;
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group"
-              >
-                <div className="relative overflow-hidden rounded-xl border border-border bg-card hover:border-accent/50 transition-all">
-                  {/* Image */}
-                  <div className="relative h-36 overflow-hidden">
-                    <img 
-                      src={stop.image} 
-                      alt={stop.place}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    
-                    <div className="absolute top-2 left-2">
-                      <span className={`px-2 py-1 bg-gradient-to-r ${stop.color} text-white text-xs font-bold rounded-full`}>
-                        Day {stop.day}
-                      </span>
-                    </div>
-                    
-                    <div className="absolute bottom-2 left-2 right-2">
-                      <h3 className="text-base font-[800] uppercase text-white">{stop.place}</h3>
-                    </div>
-                  </div>
-                  
-                  <div className="p-3">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Star className="w-3.5 h-3.5 fill-yellow-500 text-yellow-500" />
-                      <span className="text-sm font-bold">{stop.rating}</span>
-                      <span className="text-xs text-muted-foreground">({stop.reviews.toLocaleString()})</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Navigation className="w-3 h-3" />
-                      <span>{stop.distance}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+        {/* Tablet & Desktop: Parallax roadmap scene */}
+        <div className="hidden md:block">
+          <ItineraryRoadmap stops={itinerary} />
         </div>
 
         {/* Mobile: Vertical timeline with images */}
@@ -784,7 +626,7 @@ const ExploreKashmir = () => {
           viewport={{ once: true }}
         >
           <p className="text-sm text-center text-foreground">
-            <span className="font-bold">PAKSHA TIP:</span> All these routes are covered by Paksha drivers. Book one for the day — they double as your local guide.
+            <span className="font-bold">PAKSHA TIP:</span> All these routes are covered by Paksha drivers. Book one for the day and enjoy a guided tour of Kashmir.
           </p>
         </motion.div>
       </div>
