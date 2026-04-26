@@ -7,7 +7,7 @@ const navLinks = [
   { label: "HOME", path: "/" },
   { label: "ITINERARY", path: "/explore#itinerary" },
   { label: "STAY", path: "/explore#stay" },
-  { label: "BIKES", path: "/explore#bikes" },
+  { label: "RENTALS", path: "/explore#rentals" },
   { label: "FOOD", path: "/explore#food" },
   { label: "TOUR & TRAVELS", path: "/explore#agencies" },
 ];
