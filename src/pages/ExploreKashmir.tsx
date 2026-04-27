@@ -6,9 +6,9 @@ import Footer from "@/components/Footer";
 import PakshaModal from "@/components/PakshaModal";
 import ItineraryRoadmap from "@/components/ItineraryRoadmap";
 
-const sectionIds = ["itinerary", "stay", "bikes", "food", "agencies"];
-const sectionLabels = ["Itinerary", "Stay", "Bikes", "Food", "Tour & Travels"];
-const sectionIcons = ["🗺️", "🏠", "🏍️", "🍽️", "🏢"];
+const sectionIds = ["itinerary", "stay", "rentals", "food", "agencies"];
+const sectionLabels = ["Itinerary", "Stay", "Rentals", "Food", "Tour & Travels"];
+const sectionIcons = ["🗺️", "🏠", "🚗", "🍽️", "🏢"];
 
 /* ───── AGENCIES DATA ───── */
 const agencies = [
@@ -433,11 +433,13 @@ const stays = [
   { type: "HOUSEBOAT", name: "WelcomHeritage Houseboats", loc: "Dal Lake", price: "₹₹", highlights: ["Mid-range", "Warm local hosts", "Great value"], rating: 4.6, reviews: 2103, verified: true, image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80" },
 ];
 
-const bikeRentals = [
-  { name: "Srinagar Bike Rentals", loc: "Lal Chowk", bikes: "Royal Enfield, Pulsar", price: "₹700–1,200/day", rating: 4.6, reviews: 387, verified: true },
-  { name: "Dal Lake Rides", loc: "Residency Road", bikes: "Honda Activa, Scooters", price: "₹400–600/day", rating: 4.4, reviews: 256, verified: true },
-  { name: "Gulmarg Bike Hub", loc: "Gulmarg Bazaar", bikes: "Mountain bikes, Scooters", price: "₹500–800/day", rating: 4.7, reviews: 198, verified: true },
-  { name: "Pahalgam Riders", loc: "Pahalgam Market", bikes: "KTM Duke, Enfield", price: "₹800–1,500/day", rating: 4.5, reviews: 312, verified: true },
+const overallRentals = [
+  { name: "Indeed Holidays (Cabs)", loc: "Srinagar", fleet: "Innova, Etios, Tempo Traveller", price: "₹2,200–4,000/day", rating: 4.8, reviews: 562, verified: true },
+  { name: "Srinagar Car Rentals", loc: "Residency Road", fleet: "Self-drive & Chauffeur cars", price: "₹2,500–5,000/day", rating: 4.7, reviews: 428, verified: true },
+  { name: "Kashmir Royal Brothers (Bikes)", loc: "Lal Chowk", fleet: "Royal Enfield, Himalayan, Scooters", price: "₹900–2,500/day", rating: 4.9, reviews: 845, verified: true },
+  { name: "Kash Bike & Car Rentals", loc: "Dalgate", fleet: "Bikes, Scooters, Sedans", price: "₹800–3,500/day", rating: 4.6, reviews: 295, verified: true },
+  { name: "Kashmir Adventure Bikers", loc: "Rajbagh", fleet: "Off-road & Touring Bikes", price: "₹1,200–2,800/day", rating: 4.8, reviews: 367, verified: true },
+  { name: "Indeed Holidays Self-Drive", loc: "Srinagar", fleet: "Scorpio, Swift, Thar", price: "₹3,000–5,500/day", rating: 4.7, reviews: 189, verified: true },
 ];
 
 const restaurants = [
@@ -520,7 +522,7 @@ const ExploreKashmir = () => {
             EXPLORE THE<br />MOST BEAUTIFUL<br />PLACE ON EARTH.
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-6 leading-relaxed">
-            Everything you need for your Kashmir trip — itineraries, stays, bikes, food, and verified tour & travels.
+            Everything you need for your Kashmir trip — itineraries, stays, rentals, food, and verified tour & travels.
           </p>
           
           {/* Quick scroll hint */}
@@ -743,20 +745,20 @@ const ExploreKashmir = () => {
       </div>
     </section>
 
-    {/* BIKES */}
-    <section id="bikes" className="section-padding bg-background">
+    {/* RENTALS */}
+    <section id="rentals" className="section-padding bg-background">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="eyebrow mb-4">— RENT A BIKE</p>
+          <p className="eyebrow mb-4">— OVERALL RENTALS</p>
           <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-3 leading-[1.1]">
-            RIDE IT YOURSELF.
+            DRIVE OR RIDE.
           </h2>
           <p className="text-muted-foreground text-base mb-10 max-w-lg">
-            For those who want the handlebars in their own hands. All rentals verified for safety.
+            Whether you need a chauffeur-driven cab, a self-drive car, or a bike for the mountain passes.
           </p>
         </motion.div>
         <motion.div 
@@ -766,7 +768,7 @@ const ExploreKashmir = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {bikeRentals.map((b, i) => (
+          {overallRentals.map((r, i) => (
             <motion.div
               key={i}
               variants={fadeIn}
@@ -775,12 +777,12 @@ const ExploreKashmir = () => {
             >
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <h3 className="text-base font-bold uppercase text-foreground group-hover:text-accent transition-colors">{b.name}</h3>
+                  <h3 className="text-base font-bold uppercase text-foreground group-hover:text-accent transition-colors">{r.name}</h3>
                   <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                    <MapPin className="w-3 h-3" />{b.loc}
+                    <MapPin className="w-3 h-3" />{r.loc}
                   </p>
                 </div>
-                {b.verified && (
+                {r.verified && (
                   <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-[10px] font-medium rounded shrink-0">VERIFIED</span>
                 )}
               </div>
@@ -789,18 +791,19 @@ const ExploreKashmir = () => {
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                  <span className="font-bold text-foreground">{b.rating}</span>
+                  <span className="font-bold text-foreground">{r.rating}</span>
                 </div>
-                <span className="text-xs text-muted-foreground">({b.reviews} reviews)</span>
+                <span className="text-xs text-muted-foreground">({r.reviews} reviews)</span>
               </div>
               
               <div className="flex items-center justify-between pt-3 border-t border-border">
-                <p className="text-sm text-muted-foreground">{b.bikes}</p>
-                <p className="text-sm font-bold text-accent">{b.price}</p>
+                <p className="text-sm text-muted-foreground">{r.fleet}</p>
+                <p className="text-sm font-bold text-accent">{r.price}</p>
               </div>
             </motion.div>
           ))}
         </motion.div>
+
         <motion.div 
           className="mt-10 p-4 bg-accent/5 border border-accent/20 rounded-lg max-w-2xl"
           initial={{ opacity: 0, y: 20 }}
