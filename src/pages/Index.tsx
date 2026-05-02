@@ -43,7 +43,7 @@ const HeroSection = () => (
             transition={{ delay: 0.4 }}
             className="text-muted-foreground text-base md:text-lg max-w-[480px] mb-8 leading-relaxed"
           >
-            Paksha connects you with trusted local hosts across Srinagar and Kashmir. Built for mountain terrain. Launching soon.
+            Pakhsa connects you with trusted local hosts across Srinagar and Kashmir. Built for mountain terrain. Launching soon.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -179,7 +179,7 @@ const AppSection = () => (
 /* ───── HOW IT WORKS ───── */
 const howSteps = [
   { num: "01", title: "SET YOUR DESTINATION", desc: "Enter pickup & drop anywhere in Kashmir. The app shows hosts near you in real time." },
-  { num: "02", title: "MATCH WITH A LOCAL", desc: "Every Paksha host is PVC-verified by J&K Police. You see their name, bike, and rating before confirming." },
+  { num: "02", title: "MATCH WITH A LOCAL", desc: "Every Pakhsa host is PVC-verified by J&K Police. You see their name, bike, and rating before confirming." },
   { num: "03", title: "RIDE & EXPLORE", desc: "Your host knows every shortcut, viewpoint, and chai dhaba. Travel like a local." },
 ];
 
@@ -207,7 +207,7 @@ const HowItWorks = () => (
   </section>
 );
 
-/* ───── WHY PAKSHA ───── */
+/* ───── WHY PAKHSA ───── */
 const features = [
   { title: "PVC VERIFIED HOSTS", desc: "Every host background-checked by J&K Police Verification Certificate before joining." },
   { title: "SHARED RIDE MONEY ONLY", desc: "No surge pricing. Ever. You see the shared cost before you book." },
@@ -217,10 +217,10 @@ const features = [
   { title: "WOMEN SAFETY FEATURE", desc: "Option to request a female host. Emergency SOS one tap away." },
 ];
 
-const WhyPaksha = () => (
+const WhyPakhsa = () => (
   <section className="section-padding bg-card">
     <div className="container mx-auto px-4">
-      <p className="eyebrow mb-4">— WHY PAKSHA</p>
+      <p className="eyebrow mb-4">— WHY PAKHSA</p>
       <h2 className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-16 max-w-3xl leading-[1.1]">
         WE BUILT THIS FOR KASHMIR.<br />NOT A COPY-PASTE APP.
       </h2>
@@ -252,7 +252,7 @@ const WaitlistSection = () => (
         BE FIRST<br />TO RIDE.
       </h2>
       <p className="text-accent-foreground/80 text-base mb-8 max-w-md">
-        Drop your details. We'll reach out the day Paksha goes live.
+        Drop your details. We'll reach out the day Pakhsa goes live.
       </p>
       <a
         href="https://tally.so/r/MeJBbA"
@@ -299,7 +299,7 @@ const Index = () => (
         {
           "@context": "https://schema.org",
           "@type": "TravelAgency",
-          name: "Paksha",
+          name: "Pakhsa",
           url: absoluteUrl("/"),
           description:
             "Bike taxi and local travel discovery service for Srinagar, Gulmarg, Pahalgam, Sonamarg, and nearby destinations in Kashmir.",
@@ -323,7 +323,7 @@ const Index = () => (
     <StatsSection />
     <AppSection />
     <HowItWorks />
-    <WhyPaksha />
+    <WhyPakhsa />
     <WaitlistSection />
     <Footer />
   </div>

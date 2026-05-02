@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Search, Star, MapPin, Phone, Mail, X, ChevronDown, Navigation, Mountain, TreePine, Waves, Snowflake, Sun, Coffee, ExternalLink, Globe } from "lucide-react";
 import Footer from "@/components/Footer";
-import PakshaModal from "@/components/PakshaModal";
+import PakhsaModal from "@/components/PakhsaModal";
 import ItineraryRoadmap from "@/components/ItineraryRoadmap";
 import SEO from "@/components/SEO";
 import { SEO as SEO_DEFAULTS, absoluteUrl } from "@/lib/seo";
@@ -550,7 +550,7 @@ const ExploreKashmir = () => {
         },
       ]}
     />
-    <PakshaModal />
+    <PakhsaModal />
     <AgencySearchModal isOpen={agencyModalOpen} onClose={() => setAgencyModalOpen(false)} initialAgency={selectedAgencyForModal} />
 
     {/* Hero - Compact with quick actions */}
@@ -708,7 +708,7 @@ const ExploreKashmir = () => {
           viewport={{ once: true }}
         >
           <p className="text-sm text-center text-foreground">
-            <span className="font-bold">PAKSHA TIP:</span> All these routes are covered by Paksha hosts. Book one for the day and enjoy a guided tour of Kashmir.
+            <span className="font-bold">PAKHSA TIP:</span> All these routes are covered by Pakhsa hosts. Book one for the day and enjoy a guided tour of Kashmir.
           </p>
         </motion.div>
       </div>
@@ -863,7 +863,7 @@ const ExploreKashmir = () => {
           viewport={{ once: true }}
         >
           <p className="text-sm text-foreground">
-            Prefer someone else drives while you take in the view? That's what <span className="font-bold text-accent">Paksha</span> is for.
+            Prefer someone else drives while you take in the view? That's what <span className="font-bold text-accent">Pakhsa</span> is for.
           </p>
         </motion.div>
       </div>

@@ -1,8 +1,8 @@
 export const SEO = {
-  siteName: "Paksha",
-  siteUrl: "https://paksha.in",
-  defaultTitle: "Paksha - Kashmir's First Bike Taxi App | Explore Srinagar, Gulmarg, Pahalgam",
-  titleTemplate: "%s | Paksha",
+  siteName: "Pakhsa",
+  siteUrl: "https://pakhsa.in",
+  defaultTitle: "Pakhsa - Kashmir's First Bike Taxi App | Explore Srinagar, Gulmarg, Pahalgam",
+  titleTemplate: "%s | Pakhsa",
   defaultDescription:
     "Book bike taxis in Kashmir with PVC-verified local drivers. Explore Srinagar, Gulmarg, Pahalgam, Sonamarg, stays, food, and verified travel agencies.",
   defaultKeywords: [
@@ -15,11 +15,11 @@ export const SEO = {
     "verified travel agencies Kashmir",
     "Kashmir local drivers",
     "Kashmir tourism",
-    "Paksha",
+    "Pakhsa",
   ],
   defaultImage:
     "https://images.unsplash.com/photo-1597074866923-dc0589150358?w=1200&h=630&fit=crop",
-  defaultImageAlt: "Mountain landscape in Kashmir representing travel with Paksha",
+  defaultImageAlt: "Mountain landscape in Kashmir representing travel with Pakhsa",
   locale: "en_IN",
   twitterCard: "summary_large_image",
 } as const;

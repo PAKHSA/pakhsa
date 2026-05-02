@@ -43,7 +43,7 @@ const Footer = () => {
             {/* Brand */}
             <div className="lg:col-span-1">
               <Link to="/" className="text-2xl font-[800] uppercase tracking-tight text-foreground">
-                PAKSHA
+                PAKHSA
               </Link>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
                 Connecting travelers with trusted local hosts since 2025.
@@ -127,8 +127,8 @@ const Footer = () => {
                 </li>
                 <li className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Mail className="w-4 h-4 shrink-0 text-accent" />
-                  <a href="mailto:hello@paksha.in" className="hover:text-accent transition-colors">
-                    hello@paksha.in
+                  <a href="mailto:hello@pakhsa.in" className="hover:text-accent transition-colors">
+                    hello@pakhsa.in
                   </a>
                 </li>
               </ul>
@@ -145,7 +145,7 @@ const Footer = () => {
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="text-xs text-muted-foreground">
-                © {new Date().getFullYear()} Paksha. All rights reserved.
+                © {new Date().getFullYear()} Pakhsa. All rights reserved.
               </p>
               <p className="text-xs text-muted-foreground flex items-center gap-1">
                 Made with ❤️ in Kashmir

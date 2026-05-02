@@ -42,13 +42,13 @@ const setLink = (selector: string, rel: string, href: string) => {
 
 const upsertStructuredData = (items: Record<string, unknown>[]) => {
   document
-    .querySelectorAll('script[data-paksha-seo="structured-data"]')
+    .querySelectorAll('script[data-pakhsa-seo="structured-data"]')
     .forEach((node) => node.remove());
 
   items.forEach((item) => {
     const script = document.createElement("script");
     script.type = "application/ld+json";
-    script.dataset.pakshaSeo = "structured-data";
+    script.dataset.pakhsaSeo = "structured-data";
     script.text = JSON.stringify(item);
     document.head.appendChild(script);
   });

@@ -2,16 +2,16 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-const PakshaModal = () => {
+const PakhsaModal = () => {
   const [show, setShow] = useState(false);
 
   const dismiss = useCallback(() => {
     setShow(false);
-    sessionStorage.setItem("paksha_modal_shown", "true");
+    sessionStorage.setItem("pakhsa_modal_shown", "true");
   }, []);
 
   useEffect(() => {
-    if (sessionStorage.getItem("paksha_modal_shown")) return;
+    if (sessionStorage.getItem("pakhsa_modal_shown")) return;
 
     const handleScroll = () => {
       const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
@@ -22,7 +22,7 @@ const PakshaModal = () => {
     };
 
     const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0 && !sessionStorage.getItem("paksha_modal_shown")) {
+      if (e.clientY <= 0 && !sessionStorage.getItem("pakhsa_modal_shown")) {
         setShow(true);
       }
     };
@@ -68,7 +68,7 @@ const PakshaModal = () => {
                 YOUR HOST<br />AWAITS.
               </h3>
               <p className="text-base text-muted-foreground mb-6 leading-relaxed">
-                Paksha is Kashmir's first dedicated bike taxi app. Be the first to book a ride when we launch in Srinagar.
+                Pakhsa is Kashmir's first dedicated bike taxi app. Be the first to book a ride when we launch in Srinagar.
               </p>
 
               <div className="flex flex-wrap gap-3 mb-6">
@@ -102,4 +102,4 @@ const PakshaModal = () => {
   );
 };
 
-export default PakshaModal;
+export default PakhsaModal;
