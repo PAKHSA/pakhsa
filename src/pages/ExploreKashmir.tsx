@@ -5,6 +5,8 @@ import { Search, Star, MapPin, Phone, Mail, X, ChevronDown, Navigation, Mountain
 import Footer from "@/components/Footer";
 import PakshaModal from "@/components/PakshaModal";
 import ItineraryRoadmap from "@/components/ItineraryRoadmap";
+import SEO from "@/components/SEO";
+import { SEO as SEO_DEFAULTS, absoluteUrl } from "@/lib/seo";
 
 const sectionIds = ["itinerary", "stay", "rentals", "food", "agencies"];
 const sectionLabels = ["Itinerary", "Stay", "Rentals", "Food", "Tour & Travels"];
@@ -498,6 +500,56 @@ const ExploreKashmir = () => {
 
   return (
   <div className="overflow-x-hidden">
+    <SEO
+      title="Explore Kashmir Travel Guide"
+      description="Plan your Kashmir trip with curated itineraries, places to stay, bike options, food recommendations, and verified travel agencies in Srinagar and beyond."
+      path="/explore"
+      keywords={[
+        ...SEO_DEFAULTS.defaultKeywords,
+        "Kashmir itinerary",
+        "places to stay in Kashmir",
+        "Kashmir food guide",
+        "Srinagar travel agencies",
+        "Kashmir bike rental",
+      ]}
+      structuredData={[
+        {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Explore Kashmir Travel Guide",
+          url: absoluteUrl("/explore"),
+          description:
+            "Curated Kashmir travel guide featuring itineraries, stays, food, bikes, and verified agencies.",
+          isPartOf: {
+            "@type": "WebSite",
+            name: SEO_DEFAULTS.siteName,
+            url: absoluteUrl("/"),
+          },
+          about: {
+            "@type": "Place",
+            name: "Kashmir, India",
+          },
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: absoluteUrl("/"),
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Explore Kashmir",
+              item: absoluteUrl("/explore"),
+            },
+          ],
+        },
+      ]}
+    />
     <PakshaModal />
     <AgencySearchModal isOpen={agencyModalOpen} onClose={() => setAgencyModalOpen(false)} initialAgency={selectedAgencyForModal} />
 

@@ -2,6 +2,8 @@ import { motion, useInView } from "framer-motion";
 import { PhoneMockup, BookingScreen, MatchingScreen, EarningsScreen } from "@/components/PhoneMockup";
 import Footer from "@/components/Footer";
 import { useRef, useEffect, useState } from "react";
+import SEO from "@/components/SEO";
+import { SEO as SEO_DEFAULTS, absoluteUrl } from "@/lib/seo";
 
 /* ───── HERO ───── */
 const heroWords = ["RIDE", "THE", "VALLEY."];
@@ -268,6 +270,55 @@ const WaitlistSection = () => (
 /* ───── PAGE ───── */
 const Index = () => (
   <div>
+    <SEO
+      description="Book bike taxis in Kashmir with PVC-verified local drivers. Explore Srinagar, Gulmarg, Pahalgam, Sonamarg, and Dal Lake with fixed fares and trusted locals."
+      structuredData={[
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: SEO_DEFAULTS.siteName,
+          url: absoluteUrl("/"),
+          description: SEO_DEFAULTS.defaultDescription,
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: SEO_DEFAULTS.siteName,
+          url: absoluteUrl("/"),
+          description:
+            "Kashmir's first bike taxi app connecting travelers with PVC-verified local drivers.",
+          areaServed: {
+            "@type": "Place",
+            name: "Kashmir Valley, India",
+          },
+          foundingLocation: {
+            "@type": "Place",
+            name: "Srinagar, Jammu and Kashmir, India",
+          },
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "TravelAgency",
+          name: "Paksha",
+          url: absoluteUrl("/"),
+          description:
+            "Bike taxi and local travel discovery service for Srinagar, Gulmarg, Pahalgam, Sonamarg, and nearby destinations in Kashmir.",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Srinagar",
+            addressRegion: "Jammu and Kashmir",
+            addressCountry: "IN",
+          },
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: 34.0837,
+            longitude: 74.7973,
+          },
+          areaServed: ["Srinagar", "Gulmarg", "Pahalgam", "Sonamarg", "Dal Lake", "Doodhpathri"],
+          priceRange: "INR",
+        },
+      ]}
+    />
     <HeroSection />
     <StatsSection />
     <AppSection />
