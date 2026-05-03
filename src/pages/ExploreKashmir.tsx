@@ -7,13 +7,39 @@ import PakhsaModal from "@/components/PakhsaModal";
 import ItineraryRoadmap from "@/components/ItineraryRoadmap";
 import SEO from "@/components/SEO";
 import { SEO as SEO_DEFAULTS, absoluteUrl } from "@/lib/seo";
+import hotelsDirectory from "@/data/hotels-directory.json";
+import travelDirectory from "@/data/travel-directory.json";
+
+type DirectoryHotel = {
+  name: string;
+  phone: string;
+  location: string;
+  type: string;
+};
+
+type AgencyRecord = {
+  rank: number;
+  name: string;
+  location: string;
+  phone: string;
+  email: string;
+  owner: string;
+  rating?: number;
+  reviews?: number;
+  website?: string;
+  tripadvisor?: string;
+  facebook?: string;
+  service?: string;
+  dataSource?: string;
+  appNo?: string;
+};
 
 const sectionIds = ["itinerary", "stay", "rentals", "food", "agencies"];
 const sectionLabels = ["Itinerary", "Stay", "Rentals", "Food", "Tour & Travels"];
 const sectionIcons = ["🗺️", "🏠", "🚗", "🍽️", "🏢"];
 
 /* ───── AGENCIES DATA ───── */
-const agencies = [
+const agencies: AgencyRecord[] = [
   { rank: 1, name: "Aashish Tour & Travel", rating: 4.6, reviews: 186, owner: "Hamid Abbas Ganie", location: "Alamgari Bazar, near Health centre, Srinagar", phone: "7006016423", email: "travels07@yahoo.com", tripadvisor: "https://tripadvisor.com/Attraction_Review-g297623-d15756833-Reviews-Aashish_Tour_And_Travels-Srinagar_Srinagar_District.html", facebook: "https://facebook.com/AashishTourTravelsKashmir" },
   { rank: 3, name: "Ahlan India Tour & Travels", rating: 4.8, reviews: 159, owner: "Mr.Mohammed Mouzum Bazaz", location: "Upper Sathu Barbarshah, Srinagar", phone: "9797012372", email: "ahlanindiatours@gmail.com" },
   { rank: 31, name: "Poise Travel & Tourism", rating: 4.7, reviews: 238, owner: "Suhail Bhat", location: "Kukar Bazar, Amira Kadal, Srinagar", phone: "9796355555", email: "hello@poisetravels.in", website: "https://poisetravels.in" },
@@ -56,6 +82,43 @@ const agencies = [
   { rank: 1336, name: "Kashmir Hidden Wonders", rating: 5.0, reviews: 108, owner: "Javaid Ahmad Sofi", location: "Khan Complex, Batamaloo Srinagar", phone: "9070009922", email: "Kashmirhiddenwonders@gmail.com" },
   { rank: 1695, name: "Honor Tour & Travels", rating: 4.8, reviews: 732, owner: "Mr. Sajid Rasool Gujree", location: "Safa Kadal", phone: "9149876757", email: "sajidrasool12@gmail.com" },
   { rank: 1696, name: "M/S Adorable Tour and Travels", rating: 4.8, reviews: 245, owner: "Tabasum Majeed", location: "M. D Complex, Karan Nagar, Srinagar", phone: "9103000435", email: "traveladorable@gmail.com" },
+];
+
+const directoryHotels: DirectoryHotel[] = (hotelsDirectory as DirectoryHotel[]).map((hotel) => ({
+  name: hotel.name,
+  phone: hotel.phone || "",
+  location: hotel.location || "",
+  type: hotel.type || "Hotel",
+}));
+
+const importedAgencies: AgencyRecord[] = (travelDirectory as Array<{
+  appNo?: string;
+  name: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  location?: string;
+  service?: string;
+}>).map((entry, index) => ({
+  rank: 5000 + index,
+  name: entry.name,
+  location: entry.location || "",
+  phone: entry.phone || "",
+  email: entry.email || "",
+  owner: "",
+  website: entry.website || "",
+  service: entry.service || "Travel Agent",
+  dataSource: "J&K Tourism registration list",
+  appNo: entry.appNo || "",
+}));
+
+const allAgencies: AgencyRecord[] = [
+  ...agencies.map((agency) => ({
+    ...agency,
+    service: "Featured",
+    dataSource: "Curated Pakhsa directory",
+  })),
+  ...importedAgencies,
 ];
 
 /* ───── STICKY NAV WITH ACTIVE TRACKING ───── */
@@ -131,9 +194,12 @@ const SectionNav = () => {
 };
 
 /* ───── AGENCY SEARCH MODAL ───── */
-const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: boolean; onClose: () => void; initialAgency?: typeof agencies[0] | null }) => {
+const agencyFilters = ["All", "Featured", "Travel Agent", "Excursion Agent"] as const;
+
+const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: boolean; onClose: () => void; initialAgency?: AgencyRecord | null }) => {
   const [search, setSearch] = useState("");
-  const [selectedAgency, setSelectedAgency] = useState<typeof agencies[0] | null>(initialAgency);
+  const [serviceFilter, setServiceFilter] = useState<(typeof agencyFilters)[number]>("All");
+  const [selectedAgency, setSelectedAgency] = useState<AgencyRecord | null>(initialAgency);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -144,6 +210,7 @@ const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: 
       }
     } else {
       setSearch("");
+      setServiceFilter("All");
       setSelectedAgency(null);
     }
   }, [isOpen, initialAgency]);
@@ -157,16 +224,20 @@ const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: 
   }, [onClose]);
 
   const filteredAgencies = useMemo(() => {
-    if (!search.trim()) return agencies.slice(0, 8);
     const term = search.toLowerCase();
-    return agencies.filter(
-      a => a.name.toLowerCase().includes(term) || 
-           a.location.toLowerCase().includes(term) ||
-           a.owner.toLowerCase().includes(term) ||
-           (a.phone && a.phone.includes(term)) ||
-           (a.email && a.email.toLowerCase().includes(term))
+    const base = allAgencies.filter((agency) => serviceFilter === "All" || agency.service === serviceFilter);
+    if (!search.trim()) return base.slice(0, 12);
+    return base.filter(
+      (agency) =>
+        agency.name.toLowerCase().includes(term) ||
+        agency.location.toLowerCase().includes(term) ||
+        agency.owner.toLowerCase().includes(term) ||
+        agency.phone.includes(term) ||
+        agency.email.toLowerCase().includes(term) ||
+        (agency.service || "").toLowerCase().includes(term) ||
+        (agency.appNo || "").toLowerCase().includes(term)
     );
-  }, [search]);
+  }, [search, serviceFilter]);
 
   return (
     <AnimatePresence>
@@ -187,118 +258,125 @@ const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: 
             className="relative w-full max-w-2xl bg-card border border-border rounded-xl shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Search input */}
             <div className="flex items-center gap-3 px-4 py-4 border-b border-border">
               <Search className="w-5 h-5 text-muted-foreground" />
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Search verified tour & travels..."
+                placeholder="Search Kashmir tours, travels, taxis, cabs..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
               />
-              <button 
-                onClick={onClose}
-                className="p-1.5 rounded-md hover:bg-muted transition-colors"
-              >
+              <button onClick={onClose} className="p-1.5 rounded-md hover:bg-muted transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Results */}
+            <div className="flex flex-wrap gap-2 px-4 py-3 border-b border-border bg-background/70">
+              {agencyFilters.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setServiceFilter(filter)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                    serviceFilter === filter
+                      ? "bg-accent text-accent-foreground"
+                      : "bg-muted text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+
             <div className="max-h-[60vh] overflow-y-auto">
               {selectedAgency ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="p-6"
-                >
-                  <button 
-                    onClick={() => setSelectedAgency(null)}
-                    className="text-sm text-accent mb-4 hover:underline"
-                  >
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6">
+                  <button onClick={() => setSelectedAgency(null)} className="text-sm text-accent mb-4 hover:underline">
                     ← Back to results
                   </button>
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-xl font-bold text-foreground">{selectedAgency.name}</h3>
-                      <div className="flex items-center gap-2 mt-1">
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                          <span className="font-medium">{selectedAgency.rating}</span>
-                        </div>
-                        <span className="text-muted-foreground">({selectedAgency.reviews} reviews)</span>
-                        <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-medium rounded">VERIFIED</span>
+                      <div className="flex flex-wrap items-center gap-2 mt-1">
+                        {selectedAgency.rating ? (
+                          <>
+                            <div className="flex items-center gap-1">
+                              <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                              <span className="font-medium">{selectedAgency.rating}</span>
+                            </div>
+                            {selectedAgency.reviews ? <span className="text-muted-foreground">({selectedAgency.reviews} reviews)</span> : null}
+                          </>
+                        ) : null}
+                        {selectedAgency.service ? (
+                          <span className="px-2 py-0.5 bg-accent/10 text-accent text-xs font-medium rounded">
+                            {selectedAgency.service}
+                          </span>
+                        ) : null}
+                        {selectedAgency.dataSource ? (
+                          <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-medium rounded">
+                            {selectedAgency.dataSource}
+                          </span>
+                        ) : null}
                       </div>
                     </div>
-                    {selectedAgency.owner && (
+                    {selectedAgency.owner ? (
                       <div className="flex items-start gap-3 text-sm">
                         <span className="text-muted-foreground">Owner:</span>
                         <span className="text-foreground">{selectedAgency.owner}</span>
                       </div>
-                    )}
+                    ) : null}
+                    {selectedAgency.appNo ? (
+                      <div className="flex items-start gap-3 text-sm">
+                        <span className="text-muted-foreground">Application No:</span>
+                        <span className="text-foreground">{selectedAgency.appNo}</span>
+                      </div>
+                    ) : null}
                     <div className="flex items-start gap-3 text-sm">
                       <MapPin className="w-4 h-4 text-muted-foreground mt-0.5" />
-                      <span className="text-foreground">{selectedAgency.location}</span>
+                      <span className="text-foreground">{selectedAgency.location || "Location not listed"}</span>
                     </div>
-                    {selectedAgency.phone && (
+                    {selectedAgency.phone ? (
                       <a href={`tel:${selectedAgency.phone}`} className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
                         <Phone className="w-4 h-4 text-muted-foreground" />
                         <span className="text-foreground">+91 {selectedAgency.phone}</span>
                       </a>
-                    )}
-                    {selectedAgency.email && (
+                    ) : null}
+                    {selectedAgency.email ? (
                       <a href={`mailto:${selectedAgency.email}`} className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
                         <Mail className="w-4 h-4 text-muted-foreground" />
                         <span className="text-foreground">{selectedAgency.email.toLowerCase()}</span>
                       </a>
-                    )}
-                    
-                    {/* External Links */}
-                    {(selectedAgency.website || selectedAgency.tripadvisor || selectedAgency.facebook) && (
+                    ) : null}
+
+                    {(selectedAgency.website || selectedAgency.tripadvisor || selectedAgency.facebook) ? (
                       <div className="pt-3 mt-3 border-t border-border">
                         <p className="text-xs text-muted-foreground mb-2">External Links</p>
                         <div className="flex flex-wrap gap-2">
-                          {selectedAgency.website && (
-                            <a 
-                              href={selectedAgency.website} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 text-accent text-sm rounded-full hover:bg-accent/20 transition-colors"
-                            >
+                          {selectedAgency.website ? (
+                            <a href={selectedAgency.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 text-accent text-sm rounded-full hover:bg-accent/20 transition-colors">
                               <Globe className="w-3.5 h-3.5" />
                               Website
                               <ExternalLink className="w-3 h-3" />
                             </a>
-                          )}
-                          {selectedAgency.tripadvisor && (
-                            <a 
-                              href={selectedAgency.tripadvisor} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/10 text-green-600 text-sm rounded-full hover:bg-green-500/20 transition-colors"
-                            >
+                          ) : null}
+                          {selectedAgency.tripadvisor ? (
+                            <a href={selectedAgency.tripadvisor} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/10 text-green-600 text-sm rounded-full hover:bg-green-500/20 transition-colors">
                               <Star className="w-3.5 h-3.5" />
                               TripAdvisor
                               <ExternalLink className="w-3 h-3" />
                             </a>
-                          )}
-                          {selectedAgency.facebook && (
-                            <a 
-                              href={selectedAgency.facebook} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 text-blue-600 text-sm rounded-full hover:bg-blue-500/20 transition-colors"
-                            >
+                          ) : null}
+                          {selectedAgency.facebook ? (
+                            <a href={selectedAgency.facebook} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 text-blue-600 text-sm rounded-full hover:bg-blue-500/20 transition-colors">
                               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                               Facebook
                               <ExternalLink className="w-3 h-3" />
                             </a>
-                          )}
+                          ) : null}
                         </div>
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 </motion.div>
               ) : (
@@ -318,15 +396,22 @@ const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: 
                         className="w-full px-4 py-3 flex items-center gap-4 hover:bg-muted/50 transition-colors text-left"
                       >
                         <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                          <span className="text-accent font-bold text-sm">{agency.rating}</span>
+                          <span className="text-accent font-bold text-xs">
+                            {agency.rating ? agency.rating : agency.service?.[0] || "T"}
+                          </span>
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-foreground truncate">{agency.name}</p>
-                          <p className="text-sm text-muted-foreground truncate">{agency.location}</p>
+                          <p className="text-sm text-muted-foreground truncate">{agency.location || "Location not listed"}</p>
                         </div>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
-                          <Star className="w-3 h-3 fill-yellow-500 text-yellow-500" />
-                          <span>{agency.reviews} reviews</span>
+                        <div className="flex flex-col items-end gap-1 text-xs text-muted-foreground shrink-0">
+                          {agency.service ? <span>{agency.service}</span> : null}
+                          {agency.reviews ? (
+                            <span className="flex items-center gap-1">
+                              <Star className="w-3 h-3 fill-yellow-500 text-yellow-500" />
+                              {agency.reviews} reviews
+                            </span>
+                          ) : null}
                         </div>
                       </motion.button>
                     ))
@@ -335,10 +420,9 @@ const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: 
               )}
             </div>
 
-            {/* Footer */}
             <div className="px-4 py-3 border-t border-border bg-muted/30">
               <p className="text-xs text-muted-foreground text-center">
-                {agencies.length} verified tour & travels • All PVC verified by J&K Tourism
+                {allAgencies.length} Kashmir tour & travel entries • Search by name, location, service, phone, or application no.
               </p>
             </div>
           </motion.div>
@@ -430,18 +514,83 @@ const itinerary = [
 const stays = [
   { type: "HOUSEBOAT", name: "Sukoon Houseboat", loc: "Dal Lake", price: "₹₹₹", highlights: ["Luxury houseboat", "Lake views", "Butler service"], rating: 4.9, reviews: 1247, verified: true, image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80" },
   { type: "HERITAGE", name: "Lalit Grand Palace", loc: "Srinagar", price: "₹₹₹", highlights: ["19th-century palace", "Heritage rooms", "City views"], rating: 4.7, reviews: 3892, verified: true, image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80" },
-  { type: "GUESTHOUSE", name: "Pine Spring Guesthouse", loc: "Pahalgam", price: "₹₹", highlights: ["River-facing", "Budget-friendly", "Trekker base"], rating: 4.5, reviews: 856, verified: true, image: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=600&q=80" },
   { type: "GLAMPING", name: "Sonamarg Glacier Glamping", loc: "Sonamarg", price: "₹₹₹", highlights: ["Luxury tents", "Near glacier", "May–Sep only"], rating: 4.8, reviews: 432, verified: true, image: "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?w=600&q=80" },
   { type: "HOUSEBOAT", name: "WelcomHeritage Houseboats", loc: "Dal Lake", price: "₹₹", highlights: ["Mid-range", "Warm local hosts", "Great value"], rating: 4.6, reviews: 2103, verified: true, image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80" },
 ];
 
 const overallRentals = [
-  { name: "Indeed Holidays (Cabs)", loc: "Srinagar", fleet: "Innova, Etios, Tempo Traveller", price: "₹2,200–4,000/day", rating: 4.8, reviews: 562, verified: true },
-  { name: "Srinagar Car Rentals", loc: "Residency Road", fleet: "Self-drive & Chauffeur cars", price: "₹2,500–5,000/day", rating: 4.7, reviews: 428, verified: true },
-  { name: "Kashmir Royal Brothers (Bikes)", loc: "Lal Chowk", fleet: "Royal Enfield, Himalayan, Scooters", price: "₹900–2,500/day", rating: 4.9, reviews: 845, verified: true },
-  { name: "Kash Bike & Car Rentals", loc: "Dalgate", fleet: "Bikes, Scooters, Sedans", price: "₹800–3,500/day", rating: 4.6, reviews: 295, verified: true },
-  { name: "Kashmir Adventure Bikers", loc: "Rajbagh", fleet: "Off-road & Touring Bikes", price: "₹1,200–2,800/day", rating: 4.8, reviews: 367, verified: true },
-  { name: "Indeed Holidays Self-Drive", loc: "Srinagar", fleet: "Scorpio, Swift, Thar", price: "₹3,000–5,500/day", rating: 4.7, reviews: 189, verified: true },
+  {
+    type: "CABS",
+    name: "Indeed Holidays (Cabs)",
+    loc: "Srinagar",
+    fleet: "Innova, Etios, Tempo Traveller",
+    price: "₹2,200–4,000/day",
+    rating: 4.8,
+    reviews: 562,
+    verified: true,
+    image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=80",
+    highlights: ["Innova & Etios fleet", "Tempo Traveller groups", "Airport & day tours"],
+  },
+  {
+    type: "CARS",
+    name: "Srinagar Car Rentals",
+    loc: "Residency Road",
+    fleet: "Self-drive & Chauffeur cars",
+    price: "₹2,500–5,000/day",
+    rating: 4.7,
+    reviews: 428,
+    verified: true,
+    image: "https://images.unsplash.com/photo-1485463611174-f302f6a5c1c9?w=600&q=80",
+    highlights: ["Self-drive options", "Chauffeur sedans & SUVs", "City & outstation"],
+  },
+  {
+    type: "BIKES",
+    name: "Kashmir Royal Brothers (Bikes)",
+    loc: "Lal Chowk",
+    fleet: "Royal Enfield, Himalayan, Scooters",
+    price: "₹900–2,500/day",
+    rating: 4.9,
+    reviews: 845,
+    verified: true,
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+    highlights: ["Royal Enfield & Himalayan", "Scooters for city", "Helmets & permits help"],
+  },
+  {
+    type: "MIXED",
+    name: "Kash Bike & Car Rentals",
+    loc: "Dalgate",
+    fleet: "Bikes, Scooters, Sedans",
+    price: "₹800–3,500/day",
+    rating: 4.6,
+    reviews: 295,
+    verified: true,
+    image: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&q=80",
+    highlights: ["Bikes & scooters", "Sedans for family trips", "Near Dal Gate pickup"],
+  },
+  {
+    type: "BIKES",
+    name: "Kashmir Adventure Bikers",
+    loc: "Rajbagh",
+    fleet: "Off-road & Touring Bikes",
+    price: "₹1,200–2,800/day",
+    rating: 4.8,
+    reviews: 367,
+    verified: true,
+    image: "/unnamed.webp",
+    highlights: ["Off-road ready fleet", "Touring bikes", "Mountain route advice"],
+  },
+  {
+    type: "SELF-DRIVE",
+    name: "Indeed Holidays Self-Drive",
+    loc: "Srinagar",
+    fleet: "Scorpio, Swift, Thar",
+    price: "₹3,000–5,500/day",
+    rating: 4.7,
+    reviews: 189,
+    verified: true,
+    image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80",
+    highlights: ["Thar & Scorpio", "Swift for mileage runs", "Paperwork assistance"],
+  },
 ];
 
 const restaurants = [
@@ -467,8 +616,30 @@ const glossary = [
 /* ───── PAGE ───── */
 const ExploreKashmir = () => {
   const [agencyModalOpen, setAgencyModalOpen] = useState(false);
-  const [selectedAgencyForModal, setSelectedAgencyForModal] = useState<typeof agencies[0] | null>(null);
+  const [selectedAgencyForModal, setSelectedAgencyForModal] = useState<AgencyRecord | null>(null);
+  const [hotelSearch, setHotelSearch] = useState("");
+  const [hotelFilter, setHotelFilter] = useState<"All" | "Hotel">("All");
   const location = useLocation();
+
+  const filteredHotels = useMemo(() => {
+    const term = hotelSearch.toLowerCase();
+    const byFilter = directoryHotels.filter((hotel) => {
+      if (hotelFilter === "All") return true;
+      return hotel.type === "Hotel";
+    });
+
+    if (!term) return byFilter;
+
+    return byFilter.filter(
+      (hotel) =>
+        hotel.name.toLowerCase().includes(term) ||
+        hotel.location.toLowerCase().includes(term) ||
+        hotel.phone.includes(term) ||
+        hotel.type.toLowerCase().includes(term)
+    );
+  }, [hotelFilter, hotelSearch]);
+
+  const visibleHotels = hotelSearch.trim() || hotelFilter !== "All" ? filteredHotels : filteredHotels.slice(0, 6);
 
   useEffect(() => {
     if (location.hash) {
@@ -502,11 +673,19 @@ const ExploreKashmir = () => {
   <div className="overflow-x-hidden">
     <SEO
       title="Explore Kashmir Travel Guide"
-      description="Plan your Kashmir trip with curated itineraries, places to stay, bike options, food recommendations, and verified travel agencies in Srinagar and beyond."
+      description="Plan your Kashmir itinerary with trusted Kashmir stays, Kashmir tours and travels, Kashmir bike rentals, Kashmir cab and Kashmir taxi options across Srinagar and beyond."
       path="/explore"
       keywords={[
         ...SEO_DEFAULTS.defaultKeywords,
         "Kashmir itinerary",
+        "kashmir itenirary",
+        "Kashmire Tours",
+        "Kashmir Travels",
+        "Kashmir Tours and travels",
+        "Kashmir Bike rentals",
+        "Kashmir stays",
+        "Kashmir cab",
+        "Kashmir taxi",
         "places to stay in Kashmir",
         "Kashmir food guide",
         "Srinagar travel agencies",
@@ -727,7 +906,7 @@ const ExploreKashmir = () => {
             SLEEP ON THE LAKE.<br className="hidden sm:block" />WAKE TO THE MOUNTAINS.
           </h2>
           <p className="text-muted-foreground text-base mb-10 max-w-lg">
-            Hand-picked accommodations with the best reviews from travelers
+            Featured stays up top, plus a searchable Kashmir stays directory sourced from your uploaded hotel lists.
           </p>
         </motion.div>
         <motion.div 
@@ -794,6 +973,93 @@ const ExploreKashmir = () => {
             </motion.div>
           ))}
         </motion.div>
+
+        <motion.div
+          className="mt-10 rounded-2xl border border-border bg-background/60 p-5 md:p-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="eyebrow mb-2">— KASHMIR STAYS DIRECTORY</p>
+              <p className="text-sm text-muted-foreground">
+                {directoryHotels.length} registered stays. Search by name, phone, or location.
+              </p>
+            </div>
+            <div className="w-full md:max-w-md">
+              <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
+                <Search className="h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  value={hotelSearch}
+                  onChange={(e) => setHotelSearch(e.target.value)}
+                  placeholder="Search Kashmir stays..."
+                  className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {(["All", "Hotel"] as const).map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setHotelFilter(filter)}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                  hotelFilter === filter
+                    ? "bg-accent text-accent-foreground"
+                    : "bg-muted text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {visibleHotels.map((hotel) => (
+              <div key={`${hotel.name}-${hotel.location}`} className="rounded-xl border border-border bg-card/60 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-bold uppercase text-foreground">{hotel.name}</h3>
+                    <p className="mt-1 text-xs text-muted-foreground">{hotel.type}</p>
+                  </div>
+                  <span className="rounded-full bg-accent/10 px-2 py-1 text-[10px] font-medium uppercase text-accent">
+                    Directory
+                  </span>
+                </div>
+                <div className="mt-3 space-y-2 text-sm">
+                  <div className="flex items-start gap-2 text-muted-foreground">
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+                    <span>{hotel.location || "Location not listed"}</span>
+                  </div>
+                  {hotel.phone ? (
+                    <a href={`tel:${hotel.phone}`} className="flex items-center gap-2 text-foreground hover:text-accent transition-colors">
+                      <Phone className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <span>+91 {hotel.phone}</span>
+                    </a>
+                  ) : (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Phone className="h-4 w-4 shrink-0" />
+                      <span>Cell no not listed</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {!visibleHotels.length ? (
+            <p className="mt-6 text-sm text-muted-foreground">No stays found for that search yet.</p>
+          ) : null}
+
+          {hotelSearch.trim() || hotelFilter !== "All" ? null : (
+            <p className="mt-4 text-xs text-muted-foreground">
+              Showing the first 6 entries by default. Use the search bar or filters to narrow the full directory.
+            </p>
+          )}
+        </motion.div>
       </div>
     </section>
 
@@ -805,16 +1071,16 @@ const ExploreKashmir = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="eyebrow mb-4">— OVERALL RENTALS</p>
-          <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-3 leading-[1.1]">
+          <p className="eyebrow mb-4">— RENTALS</p>
+          <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-4 leading-[1.1]">
             DRIVE OR RIDE.
           </h2>
           <p className="text-muted-foreground text-base mb-10 max-w-lg">
-            Whether you need a chauffeur-driven cab, a self-drive car, or a bike for the mountain passes.
+            Featured cabs, cars, and bike rentals. Rates are indicative — call ahead to confirm fleet and day rates before you travel.
           </p>
         </motion.div>
-        <motion.div 
-          className="grid sm:grid-cols-2 gap-4 max-w-4xl"
+        <motion.div
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
@@ -824,46 +1090,69 @@ const ExploreKashmir = () => {
             <motion.div
               key={i}
               variants={fadeIn}
-              whileHover={{ y: -4 }}
-              className="group p-5 border border-border rounded-lg bg-card/50 hover:border-accent/50 transition-all"
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              className="border border-border bg-card/50 hover:border-accent/50 transition-colors rounded-xl overflow-hidden group"
             >
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <h3 className="text-base font-bold uppercase text-foreground group-hover:text-accent transition-colors">{r.name}</h3>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-                    <MapPin className="w-3 h-3" />{r.loc}
-                  </p>
+              <div className="relative h-40 overflow-hidden">
+                <img
+                  src={r.image}
+                  alt={r.name}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute top-3 left-3 right-3 flex items-start justify-between">
+                  <span className="px-2 py-1 bg-accent text-accent-foreground text-[10px] font-bold uppercase rounded">{r.type}</span>
+                  {r.verified ? (
+                    <span className="px-2 py-1 bg-green-500/90 text-white text-[10px] font-medium rounded">VERIFIED</span>
+                  ) : null}
                 </div>
-                {r.verified && (
-                  <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-[10px] font-medium rounded shrink-0">VERIFIED</span>
-                )}
-              </div>
-              
-              {/* Rating */}
-              <div className="flex items-center gap-2 mb-3">
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                  <span className="font-bold text-foreground">{r.rating}</span>
+                <div className="absolute bottom-3 right-3">
+                  <span className="px-2 py-1 bg-white/90 text-black text-xs font-bold rounded">{r.price}</span>
                 </div>
-                <span className="text-xs text-muted-foreground">({r.reviews} reviews)</span>
               </div>
-              
-              <div className="flex items-center justify-between pt-3 border-t border-border">
-                <p className="text-sm text-muted-foreground">{r.fleet}</p>
-                <p className="text-sm font-bold text-accent">{r.price}</p>
+              <div className="p-4">
+                <h3 className="text-lg font-bold uppercase text-foreground mb-1 group-hover:text-accent transition-colors">{r.name}</h3>
+                <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  {r.loc}
+                </p>
+                <div className="flex items-center gap-2 mb-3 py-2 border-y border-border">
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                    <span className="font-bold text-foreground">{r.rating}</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">({r.reviews.toLocaleString()} reviews)</span>
+                </div>
+                <p className="text-xs text-muted-foreground mb-3">{r.fleet}</p>
+                <ul className="space-y-1">
+                  {r.highlights.map((h, j) => (
+                    <li key={j} className="text-sm text-muted-foreground flex items-center gap-2">
+                      <span className="w-1 h-1 bg-accent rounded-full" />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        <motion.div 
-          className="mt-10 p-4 bg-accent/5 border border-accent/20 rounded-lg max-w-2xl"
+        <motion.div
+          className="mt-10 rounded-2xl border border-border bg-card/60 p-5 md:p-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="text-sm text-foreground">
-            Prefer someone else drives while you take in the view? That's what <span className="font-bold text-accent">Pakhsa</span> is for.
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="eyebrow mb-2">— RIDE WITH A HOST</p>
+              <p className="text-sm text-muted-foreground max-w-lg">
+                Prefer someone else drives while you take in the view? Book a Pakhsa host for the day — cabs and local drivers who know every curve of the valley.
+              </p>
+            </div>
+          </div>
+          <p className="mt-4 text-sm text-foreground">
+            <span className="font-bold">PAKHSA TIP:</span> Combine a rental for freedom with a guided day when you want zero navigation stress.
           </p>
         </motion.div>
       </div>
@@ -983,7 +1272,7 @@ const ExploreKashmir = () => {
             BOOK WITH TRUST.
           </h2>
           <p className="text-muted-foreground text-base mb-8 max-w-lg">
-            {agencies.length} tour & travels verified by J&K Tourism. All rated 4.6+ on Google with 100+ reviews.
+            {allAgencies.length} Kashmir tours and travels entries, combining curated picks with imported J&K Tourism travel and excursion registrations.
           </p>
         </motion.div>
 
@@ -998,7 +1287,7 @@ const ExploreKashmir = () => {
           whileTap={{ scale: 0.99 }}
         >
           <Search className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
-          <span className="text-muted-foreground group-hover:text-foreground transition-colors">Search verified tour & travels...</span>
+          <span className="text-muted-foreground group-hover:text-foreground transition-colors">Search Kashmir tours, travels, taxis, cabs...</span>
           <kbd className="hidden sm:inline-flex ml-auto items-center gap-1 px-2 py-1 text-xs bg-muted rounded text-muted-foreground font-mono">
             <span className="text-[10px]">⌘</span>K
           </kbd>
@@ -1049,7 +1338,7 @@ const ExploreKashmir = () => {
             onClick={() => { setSelectedAgencyForModal(null); setAgencyModalOpen(true); }}
             className="inline-flex items-center gap-2 px-6 py-3 border border-foreground/30 text-foreground font-medium text-sm uppercase tracking-wide rounded-sm hover:bg-foreground/5 transition-colors"
           >
-            View all {agencies.length} tour & travels
+            View all {allAgencies.length} tour & travels
           </button>
         </motion.div>
       </div>
