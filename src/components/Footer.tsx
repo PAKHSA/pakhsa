@@ -46,7 +46,7 @@ const Footer = () => {
                 PAKHSA
               </Link>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                Connecting travelers with trusted local hosts since 2025.
+                Ride sharing in Kashmir with PVC-verified locals. Fair shared fares. No surge. Launching soon.
               </p>
               <div className="flex gap-3 mt-4">
                 <a 

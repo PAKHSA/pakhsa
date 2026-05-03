@@ -6,7 +6,7 @@ import SEO from "@/components/SEO";
 import { SEO as SEO_DEFAULTS, absoluteUrl } from "@/lib/seo";
 
 /* ───── HERO ───── */
-const heroWords = ["RIDE", "THE", "VALLEY."];
+const heroWords = ["SHARE", "THE", "RIDE."];
 
 const HeroSection = () => (
   <section className="relative min-h-screen flex flex-col bg-background overflow-hidden pt-16">
@@ -43,7 +43,7 @@ const HeroSection = () => (
             transition={{ delay: 0.4 }}
             className="text-muted-foreground text-base md:text-lg max-w-[480px] mb-8 leading-relaxed"
           >
-            Pakhsa connects you with trusted local hosts across Srinagar and Kashmir. Built for mountain terrain. Launching soon.
+            Kashmir’s ride-sharing network — find people going your way and split the fare. PVC-verified hosts, upfront pricing, no surge. Built for the hills.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -52,10 +52,10 @@ const HeroSection = () => (
             className="flex flex-wrap gap-4"
           >
             <a href="https://tally.so/r/MeJBbA" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-accent text-accent-foreground font-bold text-sm uppercase tracking-wide rounded-sm hover:opacity-90 transition-opacity">
-              Join Waitlist →
+              Get early access →
             </a>
             <a href="#how" className="px-6 py-3 border border-foreground/30 text-foreground font-medium text-sm uppercase tracking-wide rounded-sm hover:bg-foreground/5 transition-colors">
-              See How It Works
+              How it works →
             </a>
           </motion.div>
         </div>
@@ -79,7 +79,7 @@ const HeroSection = () => (
       <div className="animate-marquee flex whitespace-nowrap">
         {Array.from({ length: 4 }).map((_, i) => (
           <span key={i} className="text-accent-foreground text-sm font-bold uppercase tracking-widest mx-4">
-            SRINAGAR · GULMARG · PAHALGAM · SONAMARG · DAL LAKE · DOODHPATHRI · LAL CHOWK · PVC VERIFIED HOSTS ·&nbsp;
+            SRINAGAR · GULMARG · PAHALGAM · SONAMARG · SHARED FARES · NO SURGE · PVC VERIFIED HOSTS ·&nbsp;
           </span>
         ))}
       </div>
@@ -110,10 +110,10 @@ const CountUp = ({ target, suffix = "" }: { target: number; suffix?: string }) =
 };
 
 const stats = [
-  { value: 3, suffix: " MIN", label: "Average pickup time" },
+  { value: 3, suffix: " MIN", label: "Target pickup time (~3 min)" },
   { value: 100, suffix: "%", label: "PVC Verified hosts" },
-  { value: 0, suffix: "", label: "Surge pricing ever", display: "₹0" },
-  { value: 7, suffix: "", label: "Valleys we operate in" },
+  { value: 0, suffix: "", label: "Surge pricing (₹0)", display: "₹0" },
+  { value: 7, suffix: "", label: "Routes launching first" },
 ];
 
 const StatsSection = () => (
@@ -139,18 +139,18 @@ const AppSection = () => (
     <div className="container mx-auto px-4">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
         <div>
-          <p className="eyebrow mb-4">— THE APP</p>
+          <p className="eyebrow mb-4">— SHARE A SEAT</p>
           <h2 className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-6">
-            DESIGNED FOR<br />KASHMIR.
+            RIDE SHARING,<br />BUILT FOR KASHMIR.
           </h2>
           <p className="text-muted-foreground text-base mb-10 max-w-lg leading-relaxed">
-            No confusing UX. No unnecessary features. Just open the app, set your destination, and a local host comes to you in minutes.
+            No more expensive solo rides. Find someone already heading your way, split the fare, and ride together — even in low network areas. Built for real Kashmir roads.
           </p>
           <div className="space-y-0">
             {[
-              "Book a ride in 30 seconds",
-              "Track your host live on map",
-              "Pay shared ride money, no surprises",
+              "See rides going your direction",
+              "Split fare before you book",
+              "Live tracking + PVC-verified host",
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-4 py-4 border-t border-border">
                 <span className="text-accent font-bold text-lg">0{i + 1}</span>
@@ -178,9 +178,9 @@ const AppSection = () => (
 
 /* ───── HOW IT WORKS ───── */
 const howSteps = [
-  { num: "01", title: "SET YOUR DESTINATION", desc: "Enter pickup & drop anywhere in Kashmir. The app shows hosts near you in real time." },
-  { num: "02", title: "MATCH WITH A LOCAL", desc: "Every Pakhsa host is PVC-verified by J&K Police. You see their name, bike, and rating before confirming." },
-  { num: "03", title: "RIDE & EXPLORE", desc: "Your host knows every shortcut, viewpoint, and chai dhaba. Travel like a local." },
+  { num: "01", title: "WHERE ARE YOU HEADED?", desc: "Enter your destination — we show rides going your direction." },
+  { num: "02", title: "MATCH & SPLIT THE RIDE", desc: "Choose a PVC-verified host — see name, vehicle, rating, and exact shared fare." },
+  { num: "03", title: "RIDE TOGETHER", desc: "Travel together, save money, and avoid surge pricing." },
 ];
 
 const HowItWorks = () => (
@@ -209,12 +209,12 @@ const HowItWorks = () => (
 
 /* ───── WHY PAKHSA ───── */
 const features = [
-  { title: "PVC VERIFIED HOSTS", desc: "Every host background-checked by J&K Police Verification Certificate before joining." },
-  { title: "SHARED RIDE MONEY ONLY", desc: "No surge pricing. Ever. You see the shared cost before you book." },
-  { title: "LOCAL KNOWLEDGE", desc: "Our hosts know Kashmir — the routes, the weather, the best stops." },
-  { title: "LOW CONNECTIVITY MODE", desc: "Works on 2G. Built for mountain terrain where signal drops." },
-  { title: "HOST-FIRST EARNINGS", desc: "Hosts keep the majority. We take the minimum. Fairness is in our DNA." },
-  { title: "WOMEN SAFETY FEATURE", desc: "Option to request a female host. Emergency SOS one tap away." },
+  { title: "UPFRONT SHARED FARES", desc: "Know your share before booking — no hidden pricing." },
+  { title: "LOCAL HOSTS", desc: "People who drive these roads daily." },
+  { title: "PVC VERIFIED", desc: "Verified identity for safety and trust." },
+  { title: "WORKS ON LOW NETWORK", desc: "Designed for patchy connectivity." },
+  { title: "FAIR FOR HOSTS", desc: "Earn on empty seats, not full trips." },
+  { title: "SAFETY FIRST", desc: "Women safety features + verified rides." },
 ];
 
 const WhyPakhsa = () => (
@@ -222,7 +222,7 @@ const WhyPakhsa = () => (
     <div className="container mx-auto px-4">
       <p className="eyebrow mb-4">— WHY PAKHSA</p>
       <h2 className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-16 max-w-3xl leading-[1.1]">
-        WE BUILT THIS FOR KASHMIR.<br />NOT A COPY-PASTE APP.
+        WE BUILT RIDE SHARING FOR KASHMIR.<br />NOT ANOTHER SURGE APP.
       </h2>
       <div className="grid md:grid-cols-2 gap-x-16">
         {features.map((f, i) => (
@@ -247,12 +247,12 @@ const WhyPakhsa = () => (
 const WaitlistSection = () => (
   <section id="waitlist" className="section-padding bg-accent">
     <div className="container mx-auto px-4 max-w-2xl">
-      <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-accent-foreground/70 mb-4">— LAUNCHING SOON IN SRINAGAR</p>
+      <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-accent-foreground/70 mb-4">— RIDE SHARING — SRINAGAR FIRST</p>
       <h2 className="text-4xl md:text-6xl lg:text-7xl font-[800] uppercase tracking-tight text-accent-foreground leading-[0.95] mb-6">
-        BE FIRST<br />TO RIDE.
+        JOIN THE FIRST<br />RIDE-SHARING NETWORK<br />IN KASHMIR.
       </h2>
       <p className="text-accent-foreground/80 text-base mb-8 max-w-md">
-        Drop your details. We'll reach out the day Pakhsa goes live.
+        Get early access when shared rides go live. Limited spots for first users.
       </p>
       <a
         href="https://tally.so/r/MeJBbA"
@@ -260,7 +260,7 @@ const WaitlistSection = () => (
         rel="noopener noreferrer"
         className="inline-flex items-center px-8 py-4 bg-accent-foreground text-accent font-bold text-sm uppercase tracking-wide rounded-sm hover:opacity-90 transition-opacity"
       >
-        Join the Waitlist →
+        Get early access →
       </a>
       <p className="text-xs text-accent-foreground/60 mt-4">No spam. Just one message when we launch.</p>
     </div>
@@ -270,9 +270,7 @@ const WaitlistSection = () => (
 /* ───── PAGE ───── */
 const Index = () => (
   <div>
-    <SEO
-      description="Book bike taxis in Kashmir with PVC-verified local drivers. Explore Srinagar, Gulmarg, Pahalgam, Sonamarg, and Dal Lake with fixed fares and trusted locals."
-      structuredData={[
+    <SEO structuredData={[
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
@@ -286,7 +284,7 @@ const Index = () => (
           name: SEO_DEFAULTS.siteName,
           url: absoluteUrl("/"),
           description:
-            "Kashmir's first bike taxi app connecting travelers with PVC-verified local drivers.",
+            "Kashmir ride-sharing platform connecting riders with PVC-verified local hosts.",
           areaServed: {
             "@type": "Place",
             name: "Kashmir Valley, India",
@@ -298,11 +296,11 @@ const Index = () => (
         },
         {
           "@context": "https://schema.org",
-          "@type": "TravelAgency",
+          "@type": "TaxiService",
           name: "Pakhsa",
           url: absoluteUrl("/"),
           description:
-            "Bike taxi and local travel discovery service for Srinagar, Gulmarg, Pahalgam, Sonamarg, and nearby destinations in Kashmir.",
+            "Shared rides with PVC-verified local hosts across Srinagar, Gulmarg, Pahalgam, Sonamarg, and nearby areas in Kashmir.",
           address: {
             "@type": "PostalAddress",
             addressLocality: "Srinagar",
