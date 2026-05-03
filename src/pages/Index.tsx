@@ -270,6 +270,16 @@ const WaitlistSection = () => (
       >
         Get Early Access →
       </a>
+      <p className="text-xs text-accent-foreground/55 mt-6 leading-relaxed">
+        Questions?{" "}
+        <a href="mailto:contact@pakhsa.in" className="underline-offset-2 hover:underline hover:text-accent-foreground">
+          contact@pakhsa.in
+        </a>
+        {" · "}
+        <a href="mailto:support@pakhsa.in" className="underline-offset-2 hover:underline hover:text-accent-foreground">
+          support@pakhsa.in
+        </a>
+      </p>
     </div>
   </section>
 );
@@ -290,6 +300,7 @@ const Index = () => (
           "@type": "Organization",
           name: SEO_DEFAULTS.siteName,
           url: absoluteUrl("/"),
+          email: "hello@pakhsa.in",
           description:
             "Find someone going your way. Split the cost. No surge pricing. Launching in Srinagar.",
           areaServed: {
@@ -300,6 +311,22 @@ const Index = () => (
             "@type": "Place",
             name: "Srinagar, Jammu and Kashmir, India",
           },
+          contactPoint: [
+            {
+              "@type": "ContactPoint",
+              email: "contact@pakhsa.in",
+              contactType: "customer service",
+              areaServed: "IN",
+              availableLanguage: "English",
+            },
+            {
+              "@type": "ContactPoint",
+              email: "support@pakhsa.in",
+              contactType: "technical support",
+              areaServed: "IN",
+              availableLanguage: "English",
+            },
+          ],
         },
         {
           "@context": "https://schema.org",

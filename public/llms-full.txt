@@ -97,7 +97,7 @@ This file is the **expanded** companion to `/llms.txt` on [pakhsa.in](https://pa
 ## Waitlist and contact
 
 - **Waitlist:** https://tally.so/r/MeJBbA  
-- **Email** appears in site chrome (e.g. footer): **hello@pakhsa.in**
+- **Email (site chrome, modal, 404):** **hello@pakhsa.in** (general), **contact@pakhsa.in** (inquiries), **support@pakhsa.in** (help). Organization JSON-LD lists `hello` plus `contactPoint` entries for contact and support.
 
 ---
 

@@ -120,11 +120,19 @@ const Footer = () => {
                   <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-accent" />
                   <span>Srinagar, J{"&"}K</span>
                 </li>
-                <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Mail className="w-4 h-4 shrink-0 text-accent" />
-                  <a href="mailto:hello@pakhsa.in" className="hover:text-accent transition-colors">
-                    hello@pakhsa.in
-                  </a>
+                <li className="flex items-start gap-2 text-sm">
+                  <Mail className="w-4 h-4 mt-0.5 shrink-0 text-accent" />
+                  <div className="flex flex-col gap-2 text-muted-foreground">
+                    <a href="mailto:hello@pakhsa.in" className="hover:text-accent transition-colors">
+                      hello@pakhsa.in
+                    </a>
+                    <a href="mailto:contact@pakhsa.in" className="hover:text-accent transition-colors">
+                      contact@pakhsa.in
+                    </a>
+                    <a href="mailto:support@pakhsa.in" className="hover:text-accent transition-colors">
+                      support@pakhsa.in
+                    </a>
+                  </div>
                 </li>
               </ul>
               <div className="mt-4 p-3 bg-accent/10 border border-accent/20 rounded-lg">

@@ -96,6 +96,15 @@ const PakhsaModal = () => {
                 </button>
               </form>
               <p className="text-xs text-muted-foreground mt-3">One email. When we launch. Nothing more.</p>
+              <p className="text-xs text-muted-foreground/80 mt-4 leading-relaxed">
+                <a href="mailto:support@pakhsa.in" className="underline-offset-2 hover:text-foreground hover:underline">
+                  support@pakhsa.in
+                </a>
+                {" · "}
+                <a href="mailto:contact@pakhsa.in" className="underline-offset-2 hover:text-foreground hover:underline">
+                  contact@pakhsa.in
+                </a>
+              </p>
             </div>
           </motion.div>
         </motion.div>

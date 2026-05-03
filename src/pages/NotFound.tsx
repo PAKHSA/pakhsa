@@ -23,6 +23,16 @@ const NotFound = () => {
         <a href="/" className="text-primary underline hover:text-primary/90">
           Return to Home
         </a>
+        <p className="mt-8 max-w-sm text-sm text-muted-foreground">
+          Wrong link or need help?{" "}
+          <a href="mailto:support@pakhsa.in" className="text-foreground underline hover:text-accent">
+            support@pakhsa.in
+          </a>
+          {" · "}
+          <a href="mailto:contact@pakhsa.in" className="text-foreground underline hover:text-accent">
+            contact@pakhsa.in
+          </a>
+        </p>
       </div>
     </div>
   );
