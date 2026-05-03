@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Mail, Phone, Instagram, Twitter, Facebook, ArrowUp } from "lucide-react";
+import { MapPin, Mail, Instagram, Twitter, Facebook, ArrowUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -46,7 +46,7 @@ const Footer = () => {
                 PAKHSA
               </Link>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                Ride sharing in Kashmir with PVC-verified locals. Fair shared fares. No surge. Launching soon.
+                Share a ride with a local. Pay your part. No surprises.
               </p>
               <div className="flex gap-3 mt-4">
                 <a 
@@ -83,23 +83,18 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/explore" className="text-sm text-muted-foreground hover:text-accent transition-colors">
-                    Explore Kashmir
-                  </Link>
-                </li>
-                <li>
                   <Link to="/explore#itinerary" className="text-sm text-muted-foreground hover:text-accent transition-colors">
-                    7-Day Itinerary
+                    Itinerary
                   </Link>
                 </li>
                 <li>
                   <Link to="/explore#agencies" className="text-sm text-muted-foreground hover:text-accent transition-colors">
-                    Travel Agencies
+                    Agencies
                   </Link>
                 </li>
                 <li>
                   <a href="https://tally.so/r/MeJBbA" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-accent transition-colors">
-                    Join Waitlist
+                    Waitlist
                   </a>
                 </li>
               </ul>
@@ -109,7 +104,7 @@ const Footer = () => {
             <div>
               <h4 className="text-sm font-bold uppercase tracking-wide text-foreground mb-4">Destinations</h4>
               <ul className="space-y-2">
-                <li><span className="text-sm text-muted-foreground">Srinagar & Dal Lake</span></li>
+                <li><span className="text-sm text-muted-foreground">Srinagar</span></li>
                 <li><span className="text-sm text-muted-foreground">Gulmarg</span></li>
                 <li><span className="text-sm text-muted-foreground">Pahalgam</span></li>
                 <li><span className="text-sm text-muted-foreground">Sonamarg</span></li>
@@ -123,7 +118,7 @@ const Footer = () => {
               <ul className="space-y-3">
                 <li className="flex items-start gap-2 text-sm text-muted-foreground">
                   <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-accent" />
-                  <span>Srinagar, Jammu & Kashmir, India</span>
+                  <span>Srinagar, J{"&"}K</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Mail className="w-4 h-4 shrink-0 text-accent" />
@@ -133,8 +128,7 @@ const Footer = () => {
                 </li>
               </ul>
               <div className="mt-4 p-3 bg-accent/10 border border-accent/20 rounded-lg">
-                <p className="text-xs text-accent font-medium">Launching Soon</p>
-                <p className="text-xs text-muted-foreground mt-1">Join our waitlist to be notified!</p>
+                <p className="text-xs text-muted-foreground">Coming soon — drop your email.</p>
               </div>
             </div>
           </div>
@@ -143,14 +137,9 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-border">
           <div className="container mx-auto px-4 py-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <p className="text-xs text-muted-foreground">
-                © {new Date().getFullYear()} Pakhsa. All rights reserved.
-              </p>
-              <p className="text-xs text-muted-foreground flex items-center gap-1">
-                Made with ❤️ in Kashmir
-              </p>
-            </div>
+            <p className="text-xs text-muted-foreground text-center sm:text-left">
+              © {new Date().getFullYear()} Pakhsa · Made in Kashmir ❤️
+            </p>
           </div>
         </div>
       </footer>

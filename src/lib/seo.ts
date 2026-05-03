@@ -1,10 +1,10 @@
 export const SEO = {
   siteName: "Pakhsa",
   siteUrl: "https://pakhsa.in",
-  defaultTitle: "Pakhsa — Kashmir Ride Sharing | Split fares with verified locals",
+  defaultTitle: "Pakhsa — Share Rides in Kashmir",
   titleTemplate: "%s | Pakhsa",
   defaultDescription:
-    "Share rides across Kashmir with PVC-verified locals. Split fares, no surge pricing, built for mountain roads. Join early access — launching in Srinagar.",
+    "Find someone going your way. Split the cost. No surge pricing. Launching in Srinagar.",
   defaultKeywords: [
     "ride sharing Kashmir",
     "shared rides Srinagar",
@@ -35,7 +35,7 @@ export const SEO = {
   ],
   defaultImage:
     "https://images.unsplash.com/photo-1597074866923-dc0589150358?w=1200&h=630&fit=crop",
-  defaultImageAlt: "Mountain landscape in Kashmir representing travel with Pakhsa",
+  defaultImageAlt: "Pakhsa — ride sharing in Kashmir",
   locale: "en_IN",
   twitterCard: "summary_large_image",
 } as const;

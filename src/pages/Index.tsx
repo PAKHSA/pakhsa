@@ -1,4 +1,6 @@
 import { motion, useInView } from "framer-motion";
+import { Link } from "react-router-dom";
+import { MapPinned } from "lucide-react";
 import { PhoneMockup, BookingScreen, MatchingScreen, EarningsScreen } from "@/components/PhoneMockup";
 import Footer from "@/components/Footer";
 import { useRef, useEffect, useState } from "react";
@@ -23,15 +25,35 @@ const HeroSection = () => (
     <div className="container mx-auto px-4 relative z-10 flex-1 flex flex-col justify-center">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
         <div>
-          <h1 className="mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05, duration: 0.45 }}
+            className="mb-5"
+          >
+            <Link
+              to="/explore"
+              className="group inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-2 text-left text-xs font-semibold uppercase tracking-[0.12em] text-foreground shadow-sm backdrop-blur-sm transition-colors hover:border-accent hover:bg-card"
+            >
+              <MapPinned className="h-4 w-4 shrink-0 text-accent" aria-hidden />
+              <span className="text-muted-foreground group-hover:text-foreground transition-colors">
+                Visiting Kashmir? Full trip guide on
+              </span>
+              <span className="text-accent underline-offset-2 group-hover:underline">Explore Kashmir</span>
+              <span className="text-muted-foreground" aria-hidden>
+                →
+              </span>
+            </Link>
+          </motion.div>
+          <h1 className="mb-6 font-['Archivo_Black',sans-serif] font-normal normal-case tracking-[-0.02em] [text-shadow:0_4px_32px_rgba(0,0,0,0.45)]">
             {heroWords.map((word, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="block text-foreground leading-[0.95]"
-                style={{ fontSize: "clamp(56px, 8vw, 120px)" }}
+                className="block text-foreground leading-[0.92]"
+                style={{ fontSize: "clamp(52px, 11vw, 128px)" }}
               >
                 {word}
               </motion.span>
@@ -43,7 +65,7 @@ const HeroSection = () => (
             transition={{ delay: 0.4 }}
             className="text-muted-foreground text-base md:text-lg max-w-[480px] mb-8 leading-relaxed"
           >
-            Kashmir’s ride-sharing network — find people going your way and split the fare. PVC-verified hosts, upfront pricing, no surge. Built for the hills.
+            Find someone going your way. Split the fare. No surge, no guessing — just a local who knows the road.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -52,10 +74,10 @@ const HeroSection = () => (
             className="flex flex-wrap gap-4"
           >
             <a href="https://tally.so/r/MeJBbA" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-accent text-accent-foreground font-bold text-sm uppercase tracking-wide rounded-sm hover:opacity-90 transition-opacity">
-              Get early access →
+              Get Early Access →
             </a>
             <a href="#how" className="px-6 py-3 border border-foreground/30 text-foreground font-medium text-sm uppercase tracking-wide rounded-sm hover:bg-foreground/5 transition-colors">
-              How it works →
+              See how it works
             </a>
           </motion.div>
         </div>
@@ -79,7 +101,7 @@ const HeroSection = () => (
       <div className="animate-marquee flex whitespace-nowrap">
         {Array.from({ length: 4 }).map((_, i) => (
           <span key={i} className="text-accent-foreground text-sm font-bold uppercase tracking-widest mx-4">
-            SRINAGAR · GULMARG · PAHALGAM · SONAMARG · SHARED FARES · NO SURGE · PVC VERIFIED HOSTS ·&nbsp;
+            SRINAGAR · GULMARG · PAHALGAM · SONAMARG · SPLIT THE FARE · NO SURGE ·&nbsp;
           </span>
         ))}
       </div>
@@ -109,11 +131,11 @@ const CountUp = ({ target, suffix = "" }: { target: number; suffix?: string }) =
   return <span ref={ref}>{val}{suffix}</span>;
 };
 
-const stats = [
-  { value: 3, suffix: " MIN", label: "Target pickup time (~3 min)" },
-  { value: 100, suffix: "%", label: "PVC Verified hosts" },
-  { value: 0, suffix: "", label: "Surge pricing (₹0)", display: "₹0" },
-  { value: 7, suffix: "", label: "Routes launching first" },
+const stats: { value?: number; suffix?: string; label: string; display?: string }[] = [
+  { display: "Local", label: "Kashmir hosts" },
+  { value: 0, suffix: "", label: "Surge charge", display: "₹0" },
+  { display: "PVC Checked", label: "Every driver" },
+  { display: "Srinagar", label: "First city" },
 ];
 
 const StatsSection = () => (
@@ -122,8 +144,8 @@ const StatsSection = () => (
       <div className="grid grid-cols-2 md:grid-cols-4">
         {stats.map((s, i) => (
           <div key={i} className={`py-12 md:py-16 text-center ${i > 0 ? "border-l border-border" : ""}`}>
-            <p className="text-5xl md:text-7xl font-[800] text-foreground leading-none mb-2">
-              {s.display || <CountUp target={s.value} suffix={s.suffix} />}
+            <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-[800] text-foreground leading-none mb-2">
+              {s.display != null ? s.display : s.value != null ? <CountUp target={s.value} suffix={s.suffix ?? ""} /> : null}
             </p>
             <p className="text-xs text-muted-foreground uppercase tracking-wide">{s.label}</p>
           </div>
@@ -141,23 +163,11 @@ const AppSection = () => (
         <div>
           <p className="eyebrow mb-4">— SHARE A SEAT</p>
           <h2 className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-6">
-            RIDE SHARING,<br />BUILT FOR KASHMIR.
+            RIDES THAT MAKE SENSE<br />IN KASHMIR.
           </h2>
           <p className="text-muted-foreground text-base mb-10 max-w-lg leading-relaxed">
-            No more expensive solo rides. Find someone already heading your way, split the fare, and ride together — even in low network areas. Built for real Kashmir roads.
+            See who&apos;s going your way. Pay only for your seat. Your driver lives here — they know the road.
           </p>
-          <div className="space-y-0">
-            {[
-              "See rides going your direction",
-              "Split fare before you book",
-              "Live tracking + PVC-verified host",
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4 py-4 border-t border-border">
-                <span className="text-accent font-bold text-lg">0{i + 1}</span>
-                <span className="text-foreground text-sm font-medium">{item}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
         <div className="flex justify-center items-end gap-3">
@@ -178,9 +188,9 @@ const AppSection = () => (
 
 /* ───── HOW IT WORKS ───── */
 const howSteps = [
-  { num: "01", title: "WHERE ARE YOU HEADED?", desc: "Enter your destination — we show rides going your direction." },
-  { num: "02", title: "MATCH & SPLIT THE RIDE", desc: "Choose a PVC-verified host — see name, vehicle, rating, and exact shared fare." },
-  { num: "03", title: "RIDE TOGETHER", desc: "Travel together, save money, and avoid surge pricing." },
+  { num: "01", title: "WHERE TO?", desc: "Enter your stop." },
+  { num: "02", title: "FIND A MATCH", desc: "Someone's already going that way." },
+  { num: "03", title: "GO", desc: "Share the ride, split the cost." },
 ];
 
 const HowItWorks = () => (
@@ -209,12 +219,10 @@ const HowItWorks = () => (
 
 /* ───── WHY PAKHSA ───── */
 const features = [
-  { title: "UPFRONT SHARED FARES", desc: "Know your share before booking — no hidden pricing." },
-  { title: "LOCAL HOSTS", desc: "People who drive these roads daily." },
-  { title: "PVC VERIFIED", desc: "Verified identity for safety and trust." },
-  { title: "WORKS ON LOW NETWORK", desc: "Designed for patchy connectivity." },
-  { title: "FAIR FOR HOSTS", desc: "Earn on empty seats, not full trips." },
-  { title: "SAFETY FIRST", desc: "Women safety features + verified rides." },
+  { title: "YOU ONLY PAY YOUR SHARE", desc: "Not the whole cab. Just your seat." },
+  { title: "DRIVERS ARE CHECKED", desc: "PVC verified before they go live." },
+  { title: "THE PRICE IS THE PRICE", desc: "No surge. Not ever." },
+  { title: "WE KNOW THESE ROADS", desc: "Gulmarg, Pahalgam, Sonamarg — routes that actually matter here." },
 ];
 
 const WhyPakhsa = () => (
@@ -222,9 +230,9 @@ const WhyPakhsa = () => (
     <div className="container mx-auto px-4">
       <p className="eyebrow mb-4">— WHY PAKHSA</p>
       <h2 className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-16 max-w-3xl leading-[1.1]">
-        WE BUILT RIDE SHARING FOR KASHMIR.<br />NOT ANOTHER SURGE APP.
+        FOUR REASONS TO RIDE WITH US.
       </h2>
-      <div className="grid md:grid-cols-2 gap-x-16">
+      <div className="grid md:grid-cols-2 gap-x-16 max-w-4xl">
         {features.map((f, i) => (
           <motion.div
             key={i}
@@ -247,12 +255,12 @@ const WhyPakhsa = () => (
 const WaitlistSection = () => (
   <section id="waitlist" className="section-padding bg-accent">
     <div className="container mx-auto px-4 max-w-2xl">
-      <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-accent-foreground/70 mb-4">— RIDE SHARING — SRINAGAR FIRST</p>
+      <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-accent-foreground/70 mb-4">— STARTING IN SRINAGAR</p>
       <h2 className="text-4xl md:text-6xl lg:text-7xl font-[800] uppercase tracking-tight text-accent-foreground leading-[0.95] mb-6">
-        JOIN THE FIRST<br />RIDE-SHARING NETWORK<br />IN KASHMIR.
+        BE FIRST WHEN<br />WE LAUNCH.
       </h2>
       <p className="text-accent-foreground/80 text-base mb-8 max-w-md">
-        Get early access when shared rides go live. Limited spots for first users.
+        Leave your email. We&apos;ll tell you when we&apos;re live. That&apos;s all.
       </p>
       <a
         href="https://tally.so/r/MeJBbA"
@@ -260,9 +268,8 @@ const WaitlistSection = () => (
         rel="noopener noreferrer"
         className="inline-flex items-center px-8 py-4 bg-accent-foreground text-accent font-bold text-sm uppercase tracking-wide rounded-sm hover:opacity-90 transition-opacity"
       >
-        Get early access →
+        Get Early Access →
       </a>
-      <p className="text-xs text-accent-foreground/60 mt-4">No spam. Just one message when we launch.</p>
     </div>
   </section>
 );
@@ -284,7 +291,7 @@ const Index = () => (
           name: SEO_DEFAULTS.siteName,
           url: absoluteUrl("/"),
           description:
-            "Kashmir ride-sharing platform connecting riders with PVC-verified local hosts.",
+            "Find someone going your way. Split the cost. No surge pricing. Launching in Srinagar.",
           areaServed: {
             "@type": "Place",
             name: "Kashmir Valley, India",
@@ -300,7 +307,7 @@ const Index = () => (
           name: "Pakhsa",
           url: absoluteUrl("/"),
           description:
-            "Shared rides with PVC-verified local hosts across Srinagar, Gulmarg, Pahalgam, Sonamarg, and nearby areas in Kashmir.",
+            "Share rides in Kashmir. Split fares with verified locals. No surge — launching in Srinagar.",
           address: {
             "@type": "PostalAddress",
             addressLocality: "Srinagar",

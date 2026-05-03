@@ -9,7 +9,7 @@ const navLinks = [
   { label: "STAY", path: "/explore#stay" },
   { label: "RENTALS", path: "/explore#rentals" },
   { label: "FOOD", path: "/explore#food" },
-  { label: "TOUR & TRAVELS", path: "/explore#agencies" },
+  { label: "AGENCIES", path: "/explore#agencies" },
 ];
 
 const Navbar = () => {

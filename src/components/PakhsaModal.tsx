@@ -65,14 +65,16 @@ const PakhsaModal = () => {
             <div>
               <p className="eyebrow mb-4">🛵 LAUNCHING SOON</p>
               <h3 className="text-3xl md:text-[42px] font-[800] uppercase tracking-tight leading-[1.1] text-foreground mb-4">
-                YOUR HOST<br />AWAITS.
+                YOUR HOST
+                <br />
+                AWAITS.
               </h3>
               <p className="text-base text-muted-foreground mb-6 leading-relaxed">
-                Pakhsa is Kashmir's first dedicated bike taxi app. Be the first to book a ride when we launch in Srinagar.
+                Pakhsa is Kashmir&apos;s ride-sharing network — split fares with PVC-verified locals, no surge. Get early access when we launch in Srinagar.
               </p>
 
               <div className="flex flex-wrap gap-3 mb-6">
-                {["3 MIN PICKUP", "PVC VERIFIED", "SHARED PETROL MONEY"].map((chip) => (
+                {["PVC VERIFIED", "SHARED FARE", "NO SURGE"].map((chip) => (
                   <span key={chip} className="px-3 py-1.5 text-[11px] font-medium uppercase tracking-wide bg-muted border-l-2 border-accent text-foreground">
                     {chip}
                   </span>

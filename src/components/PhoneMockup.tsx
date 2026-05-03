@@ -22,11 +22,11 @@ export const PhoneMockup = ({ children, className = "" }: PhoneMockupProps) => (
 
 export const BookingScreen = () => (
   <div className="h-[380px] p-4 text-foreground text-xs flex flex-col">
-    <p className="eyebrow mb-3">BOOK A RIDE</p>
+    <p className="eyebrow mb-3">SHARE A RIDE</p>
     <div className="flex-1 bg-muted rounded-lg mb-3 flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-muted to-background/50" />
       <div className="relative z-10 text-center">
-        <p className="text-muted-foreground text-[10px]">SRINAGAR MAP</p>
+        <p className="text-muted-foreground text-[10px]">YOUR ROUTE</p>
         <div className="flex gap-4 mt-2 justify-center">
           <span className="text-lg">🛵</span>
           <span className="text-lg">🛵</span>
@@ -44,8 +44,11 @@ export const BookingScreen = () => (
       </div>
     </div>
     <div className="flex items-center justify-between mb-3">
-      <span className="text-accent font-bold text-lg">₹54</span>
-      <span className="text-muted-foreground text-[10px]">EST. 12 MIN</span>
+      <div>
+        <span className="text-accent font-bold text-lg">₹54</span>
+        <span className="block text-muted-foreground text-[9px] uppercase tracking-wide">your share</span>
+      </div>
+      <span className="text-muted-foreground text-[10px]">Shared route</span>
     </div>
     <button className="w-full py-2.5 rounded bg-accent text-accent-foreground font-bold text-xs uppercase tracking-wide">
       Find My Ride →
@@ -66,7 +69,7 @@ export const MatchingScreen = () => (
     </div>
     <div className="w-full bg-card rounded-lg border border-border p-3">
       <p className="font-bold text-sm">Riyaz Ahmed</p>
-      <p className="text-muted-foreground text-[10px] mt-1">4.9★ · 3 min away</p>
+      <p className="text-muted-foreground text-[10px] mt-1">4.9★ · Matched host</p>
       <p className="text-accent text-[10px] mt-1 font-medium">PVC VERIFIED</p>
     </div>
   </div>

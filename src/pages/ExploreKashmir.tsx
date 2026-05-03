@@ -35,7 +35,7 @@ type AgencyRecord = {
 };
 
 const sectionIds = ["itinerary", "stay", "rentals", "food", "agencies"];
-const sectionLabels = ["Itinerary", "Stay", "Rentals", "Food", "Tour & Travels"];
+const sectionLabels = ["Itinerary", "Stay", "Rentals", "Food", "Agencies"];
 const sectionIcons = ["🗺️", "🏠", "🚗", "🍽️", "🏢"];
 
 /* ───── AGENCIES DATA ───── */
@@ -263,7 +263,7 @@ const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: 
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Search Kashmir tours, travels, taxis, cabs..."
+                placeholder="Search by name or place…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
@@ -383,7 +383,7 @@ const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: 
                 <div className="py-2">
                   {filteredAgencies.length === 0 ? (
                     <div className="px-4 py-8 text-center text-muted-foreground">
-                      No tour & travels found matching "{search}"
+                      No results. Try something else.
                     </div>
                   ) : (
                     filteredAgencies.map((agency, i) => (
@@ -672,8 +672,8 @@ const ExploreKashmir = () => {
   return (
   <div className="overflow-x-hidden">
     <SEO
-      title="Explore Kashmir Travel Guide"
-      description="Plan your Kashmir itinerary with trusted Kashmir stays, Kashmir tours and travels, Kashmir bike rentals, Kashmir cab and Kashmir taxi options across Srinagar and beyond."
+      title="Explore Kashmir | Pakhsa"
+      description="Itinerary, places to stay, food worth eating, and tour & travel agencies registered with J&K Tourism."
       path="/explore"
       keywords={[
         ...SEO_DEFAULTS.defaultKeywords,
@@ -695,10 +695,10 @@ const ExploreKashmir = () => {
         {
           "@context": "https://schema.org",
           "@type": "CollectionPage",
-          name: "Explore Kashmir Travel Guide",
+          name: "Explore Kashmir",
           url: absoluteUrl("/explore"),
           description:
-            "Curated Kashmir travel guide featuring itineraries, stays, food, bikes, and verified agencies.",
+            "Itinerary, stays, food, rentals, and J&K Tourism–registered agencies in one place.",
           isPartOf: {
             "@type": "WebSite",
             name: SEO_DEFAULTS.siteName,
@@ -748,12 +748,12 @@ const ExploreKashmir = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="eyebrow mb-4">— YOUR GUIDE TO KASHMIR</p>
+          <p className="eyebrow mb-4">— PLAN YOUR TRIP</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-[800] uppercase tracking-tight text-foreground leading-[1.05] mb-4 max-w-3xl">
-            EXPLORE THE<br />MOST BEAUTIFUL<br />PLACE ON EARTH.
+            EVERYTHING YOU NEED<br />IN ONE PLACE.
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-6 leading-relaxed">
-            Everything you need for your Kashmir trip — itineraries, stays, rentals, food, and verified tour & travels.
+            Itinerary, places to stay, food worth eating, and people who can take you there.
           </p>
           
           {/* Quick scroll hint */}
@@ -781,13 +781,10 @@ const ExploreKashmir = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <p className="eyebrow mb-4">— OPTIMAL TOUR ROUTE</p>
+          <p className="eyebrow mb-4">— 7 DAYS</p>
           <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-4 leading-[1.1]">
-            7 DAYS. ONE PERFECT LOOP.
+            THE ROUTE THAT COVERS IT ALL.
           </h2>
-          <p className="text-muted-foreground text-base max-w-lg mx-auto">
-            Follow this curated route through Kashmir's most breathtaking destinations
-          </p>
         </motion.div>
 
         {/* Tablet & Desktop: Parallax roadmap scene */}
@@ -887,7 +884,7 @@ const ExploreKashmir = () => {
           viewport={{ once: true }}
         >
           <p className="text-sm text-center text-foreground">
-            <span className="font-bold">PAKHSA TIP:</span> All these routes are covered by Pakhsa hosts. Book one for the day and enjoy a guided tour of Kashmir.
+            <span className="font-bold">PAKHSA TIP:</span> All these stops have Pakhsa hosts. Share the ride, not the full cab cost.
           </p>
         </motion.div>
       </div>
@@ -901,13 +898,10 @@ const ExploreKashmir = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="eyebrow mb-4">— STAY</p>
+          <p className="eyebrow mb-4">— WHERE TO SLEEP</p>
           <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-4 leading-[1.1]">
-            SLEEP ON THE LAKE.<br className="hidden sm:block" />WAKE TO THE MOUNTAINS.
+            WAKE UP ON THE LAKE.
           </h2>
-          <p className="text-muted-foreground text-base mb-10 max-w-lg">
-            Featured stays up top, plus a searchable Kashmir stays directory sourced from your uploaded hotel lists.
-          </p>
         </motion.div>
         <motion.div 
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
@@ -994,7 +988,7 @@ const ExploreKashmir = () => {
                   type="text"
                   value={hotelSearch}
                   onChange={(e) => setHotelSearch(e.target.value)}
-                  placeholder="Search Kashmir stays..."
+                  placeholder="Search by name or place…"
                   className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
                 />
               </div>
@@ -1051,7 +1045,7 @@ const ExploreKashmir = () => {
           </div>
 
           {!visibleHotels.length ? (
-            <p className="mt-6 text-sm text-muted-foreground">No stays found for that search yet.</p>
+            <p className="mt-6 text-sm text-muted-foreground">Nothing here. Try a different search.</p>
           ) : null}
 
           {hotelSearch.trim() || hotelFilter !== "All" ? null : (
@@ -1071,12 +1065,12 @@ const ExploreKashmir = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="eyebrow mb-4">— RENTALS</p>
+          <p className="eyebrow mb-4">— GETTING AROUND</p>
           <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-4 leading-[1.1]">
-            DRIVE OR RIDE.
+            YOUR OWN CAB OR A SHARED ONE.
           </h2>
           <p className="text-muted-foreground text-base mb-10 max-w-lg">
-            Featured cabs, cars, and bike rentals. Rates are indicative — call ahead to confirm fleet and day rates before you travel.
+            These are starting rates. Call to confirm before you book.
           </p>
         </motion.div>
         <motion.div
@@ -1143,16 +1137,8 @@ const ExploreKashmir = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="eyebrow mb-2">— RIDE WITH A HOST</p>
-              <p className="text-sm text-muted-foreground max-w-lg">
-                Prefer someone else drives while you take in the view? Book a Pakhsa host for the day — cabs and local drivers who know every curve of the valley.
-              </p>
-            </div>
-          </div>
-          <p className="mt-4 text-sm text-foreground">
-            <span className="font-bold">PAKHSA TIP:</span> Combine a rental for freedom with a guided day when you want zero navigation stress.
+          <p className="text-sm text-foreground">
+            <span className="font-bold">PAKHSA TIP:</span> Sharing a ride is almost always cheaper. Check Pakhsa first.
           </p>
         </motion.div>
       </div>
@@ -1166,13 +1152,10 @@ const ExploreKashmir = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="eyebrow mb-4">— KASHMIRI FOOD</p>
-          <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-3 leading-[1.1]">
-            EAT LIKE IT'S A CEREMONY.
+          <p className="eyebrow mb-4">— WHAT TO EAT</p>
+          <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-10 leading-[1.1]">
+            KASHMIRI FOOD ISN&apos;T JUST FOOD.
           </h2>
-          <p className="text-muted-foreground text-base mb-10 max-w-lg">
-            Kashmiri Wazwan is not a meal. It's a ritual. Here's where to find the real thing — all highly rated.
-          </p>
         </motion.div>
         <motion.div 
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
@@ -1230,7 +1213,7 @@ const ExploreKashmir = () => {
         </motion.div>
 
         {/* Glossary - Collapsible */}
-        {/* <motion.details 
+        <motion.details
           className="mt-12 max-w-3xl group"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -1239,11 +1222,11 @@ const ExploreKashmir = () => {
           <summary className="cursor-pointer list-none">
             <div className="flex items-center gap-3 py-4 border-t border-border hover:bg-muted/30 -mx-4 px-4 transition-colors rounded">
               <ChevronDown className="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform" />
-              <span className="eyebrow">— KASHMIR FOOD GLOSSARY</span>
+              <span className="eyebrow">— WHAT&apos;S ON YOUR PLATE</span>
               <span className="text-xs text-muted-foreground ml-auto">Click to expand</span>
             </div>
           </summary>
-          <motion.div 
+          <motion.div
             className="grid sm:grid-cols-2 gap-4 py-4 pl-7"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -1255,7 +1238,7 @@ const ExploreKashmir = () => {
               </div>
             ))}
           </motion.div>
-        </motion.details> */}
+        </motion.details>
       </div>
     </section>
 
@@ -1267,12 +1250,12 @@ const ExploreKashmir = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="eyebrow mb-4">— VERIFIED TOUR & TRAVELS</p>
+          <p className="eyebrow mb-4">— TOUR & TRAVELS</p>
           <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-3 leading-[1.1]">
-            BOOK WITH TRUST.
+            FIND SOMEONE WHO KNOWS THE VALLEY.
           </h2>
           <p className="text-muted-foreground text-base mb-8 max-w-lg">
-            {allAgencies.length} Kashmir tours and travels entries, combining curated picks with imported J&K Tourism travel and excursion registrations.
+            Everyone listed here is registered with J&K Tourism.
           </p>
         </motion.div>
 
@@ -1287,7 +1270,7 @@ const ExploreKashmir = () => {
           whileTap={{ scale: 0.99 }}
         >
           <Search className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
-          <span className="text-muted-foreground group-hover:text-foreground transition-colors">Search Kashmir tours, travels, taxis, cabs...</span>
+          <span className="text-muted-foreground group-hover:text-foreground transition-colors">Search by name or place…</span>
           <kbd className="hidden sm:inline-flex ml-auto items-center gap-1 px-2 py-1 text-xs bg-muted rounded text-muted-foreground font-mono">
             <span className="text-[10px]">⌘</span>K
           </kbd>
@@ -1317,7 +1300,7 @@ const ExploreKashmir = () => {
                   </div>
                   <span className="text-xs text-muted-foreground">({agency.reviews})</span>
                 </div>
-                <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-[10px] font-medium rounded uppercase">Verified</span>
+                <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-[10px] font-medium rounded">✓ J{"&"}K Registered</span>
               </div>
               <h3 className="font-bold text-foreground mb-1 group-hover:text-accent transition-colors line-clamp-1">{agency.name}</h3>
               <p className="text-sm text-muted-foreground line-clamp-1 flex items-center gap-1">
@@ -1338,7 +1321,7 @@ const ExploreKashmir = () => {
             onClick={() => { setSelectedAgencyForModal(null); setAgencyModalOpen(true); }}
             className="inline-flex items-center gap-2 px-6 py-3 border border-foreground/30 text-foreground font-medium text-sm uppercase tracking-wide rounded-sm hover:bg-foreground/5 transition-colors"
           >
-            View all {allAgencies.length} tour & travels
+            View all {allAgencies.length} agencies
           </button>
         </motion.div>
       </div>
