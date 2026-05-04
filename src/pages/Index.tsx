@@ -8,7 +8,7 @@ import SEO from "@/components/SEO";
 import { SEO as SEO_DEFAULTS, absoluteUrl } from "@/lib/seo";
 
 /* ───── HERO ───── */
-const heroWords = ["SHARE", "THE", "RIDE."];
+const heroLines = ["PAKHSA", "SHARED RIDES", "IN KASHMIR"];
 
 const HeroSection = () => (
   <section className="relative min-h-screen flex flex-col bg-background overflow-hidden pt-16">
@@ -45,17 +45,17 @@ const HeroSection = () => (
               </span>
             </Link>
           </motion.div>
-          <h1 className="mb-6 font-['Archivo_Black',sans-serif] font-normal normal-case tracking-[-0.02em] [text-shadow:0_4px_32px_rgba(0,0,0,0.45)]">
-            {heroWords.map((word, i) => (
+          <h1 className="mb-5 font-display font-extrabold normal-case tracking-[-0.04em] [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] [font-feature-settings:'liga'_1,'kern'_1]">
+            {heroLines.map((line, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="block text-foreground leading-[0.92]"
-                style={{ fontSize: "clamp(52px, 11vw, 128px)" }}
+                className="block text-foreground leading-[0.98]"
+                style={{ fontSize: "clamp(1.875rem, 5.75vw, 3.75rem)" }}
               >
-                {word}
+                {line}
               </motion.span>
             ))}
           </h1>
@@ -63,9 +63,9 @@ const HeroSection = () => (
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-muted-foreground text-base md:text-lg max-w-[480px] mb-8 leading-relaxed"
+            className="text-muted-foreground text-base md:text-lg max-w-[520px] mb-8 leading-relaxed"
           >
-            Find someone going your way. Split the fare. No surge, no guessing — just a local who knows the road.
+            Pakhsa is Kashmir&apos;s ride-sharing and carpool platform for Srinagar and beyond: connect with riders going your way, split the fare, and ride without surge pricing — with locals who know the roads.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -139,7 +139,10 @@ const stats: { value?: number; suffix?: string; label: string; display?: string 
 ];
 
 const StatsSection = () => (
-  <section className="bg-background border-y border-border">
+  <section className="bg-background border-y border-border" aria-labelledby="stats-heading">
+    <h2 id="stats-heading" className="sr-only">
+      Pakhsa ride sharing in Kashmir — what to expect
+    </h2>
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-2 md:grid-cols-4">
         {stats.map((s, i) => (
@@ -194,10 +197,16 @@ const howSteps = [
 ];
 
 const HowItWorks = () => (
-  <section id="how" className="section-padding bg-background">
+  <section id="how" className="section-padding bg-background" aria-labelledby="how-heading">
     <div className="container mx-auto px-4">
       <p className="eyebrow mb-4">— HOW IT WORKS</p>
-      <div className="grid md:grid-cols-3 gap-8 md:gap-0 mt-12">
+      <h2 id="how-heading" className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-4 max-w-3xl leading-[1.1]">
+        Share a ride in Kashmir in three steps
+      </h2>
+      <p className="text-muted-foreground text-base max-w-2xl mb-12 leading-relaxed">
+        Whether you&apos;re commuting in Srinagar or heading to Gulmarg or Pahalgam, Pakhsa matches you with riders already going your direction — a simple, cost-effective way to travel Kashmir.
+      </p>
+      <div className="grid md:grid-cols-3 gap-8 md:gap-0 mt-4">
         {howSteps.map((s, i) => (
           <motion.div
             key={i}
@@ -251,6 +260,44 @@ const WhyPakhsa = () => (
   </section>
 );
 
+/* ───── DEEP CONTENT / KEYWORDS ───── */
+const KashmirRideSharingSection = () => (
+  <section
+    id="pakhsa-kashmir"
+    className="section-padding bg-background border-y border-border"
+    aria-labelledby="kashmir-deep-heading"
+  >
+    <div className="container mx-auto px-4 max-w-4xl">
+      <h2 id="kashmir-deep-heading" className="text-3xl md:text-5xl font-[800] uppercase tracking-tight text-foreground mb-6 leading-[1.1]">
+        Ride sharing in Srinagar &amp; Kashmir — affordable, safe, surge-free
+      </h2>
+      <p className="text-muted-foreground text-base mb-12 leading-relaxed">
+        Pakhsa is built as a local ride-sharing platform for India&apos;s Kashmir region: everyday commutes in Srinagar, airport and hotel transfers, and longer hops to favourite destinations — with transparent pricing on a no-surge ride hailing model.
+      </p>
+      <div className="grid md:grid-cols-1 gap-10">
+        <div>
+          <h3 className="text-xl font-[800] uppercase tracking-tight text-foreground mb-3">Cost-effective travel &amp; carpooling</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            You only pay for your seat, not a whole cab. That makes shared rides and carpooling in Kashmir a practical option for students, office commutes, and weekend trips — connect with riders who are already going your way and keep travel affordable.
+          </p>
+        </div>
+        <div>
+          <h3 className="text-xl font-[800] uppercase tracking-tight text-foreground mb-3">Safe carpooling &amp; verified drivers</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            We take safety seriously: driver checks and verification help you feel confident when you share a ride. Pakhsa is designed for the way people actually move in Srinagar and across the valley — not a one-size-fits-all import from other cities.
+          </p>
+        </div>
+        <div>
+          <h3 className="text-xl font-[800] uppercase tracking-tight text-foreground mb-3">No surge pricing on the Pakhsa app</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            The price you see is the price you pay — a no-surge ride sharing app for Kashmir, so you&apos;re not punished for rain, rush hour, or high demand. Join the waitlist to be first when the Pakhsa app launches; we&apos;ll keep you posted for download and early access.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
 /* ───── WAITLIST CTA ───── */
 const WaitlistSection = () => (
   <section id="waitlist" className="section-padding bg-accent">
@@ -287,22 +334,51 @@ const WaitlistSection = () => (
 /* ───── PAGE ───── */
 const Index = () => (
   <div>
-    <SEO structuredData={[
+    <SEO
+      description={SEO_DEFAULTS.defaultDescription}
+      structuredData={[
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
+          "@id": `${absoluteUrl("/")}#website`,
           name: SEO_DEFAULTS.siteName,
           url: absoluteUrl("/"),
           description: SEO_DEFAULTS.defaultDescription,
+          inLanguage: "en-IN",
+          publisher: { "@id": `${absoluteUrl("/")}#organization` },
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": `${absoluteUrl("/")}#webpage`,
+          url: absoluteUrl("/"),
+          name: SEO_DEFAULTS.defaultTitle,
+          description: SEO_DEFAULTS.defaultDescription,
+          inLanguage: "en-IN",
+          isPartOf: { "@id": `${absoluteUrl("/")}#website` },
+          about: {
+            "@type": "Service",
+            name: "Pakhsa ride sharing and carpooling",
+            serviceType: "Shared rides and carpooling",
+            areaServed: { "@type": "Place", name: "Kashmir Valley and Srinagar, India" },
+          },
         },
         {
           "@context": "https://schema.org",
           "@type": "Organization",
+          "@id": `${absoluteUrl("/")}#organization`,
           name: SEO_DEFAULTS.siteName,
           url: absoluteUrl("/"),
           email: "hello@pakhsa.in",
-          description:
-            "Find someone going your way. Split the cost. No surge pricing. Launching in Srinagar.",
+          slogan: "Share rides in Kashmir — affordable carpooling, no surge pricing.",
+          description: SEO_DEFAULTS.defaultDescription,
+          knowsAbout: [
+            "ride sharing Kashmir",
+            "carpool Srinagar",
+            "Srinagar ride hailing",
+            "no surge pricing",
+            "Kashmir carpooling",
+          ],
           areaServed: {
             "@type": "Place",
             name: "Kashmir Valley, India",
@@ -317,14 +393,14 @@ const Index = () => (
               email: "contact@pakhsa.in",
               contactType: "customer service",
               areaServed: "IN",
-              availableLanguage: "English",
+              availableLanguage: ["English", "Hindi"],
             },
             {
               "@type": "ContactPoint",
               email: "support@pakhsa.in",
               contactType: "technical support",
               areaServed: "IN",
-              availableLanguage: "English",
+              availableLanguage: ["English", "Hindi"],
             },
           ],
         },
@@ -333,8 +409,7 @@ const Index = () => (
           "@type": "TaxiService",
           name: "Pakhsa",
           url: absoluteUrl("/"),
-          description:
-            "Share rides in Kashmir. Split fares with verified locals. No surge — launching in Srinagar.",
+          description: SEO_DEFAULTS.defaultDescription,
           address: {
             "@type": "PostalAddress",
             addressLocality: "Srinagar",
@@ -356,6 +431,7 @@ const Index = () => (
     <AppSection />
     <HowItWorks />
     <WhyPakhsa />
+    <KashmirRideSharingSection />
     <WaitlistSection />
     <Footer />
   </div>

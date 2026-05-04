@@ -672,7 +672,7 @@ const ExploreKashmir = () => {
   return (
   <div className="overflow-x-hidden">
     <SEO
-      title="Explore Kashmir | Pakhsa"
+      title="Explore Kashmir"
       description="Itinerary, places to stay, food worth eating, and tour & travel agencies registered with J&K Tourism."
       path="/explore"
       keywords={[

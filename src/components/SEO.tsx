@@ -40,6 +40,26 @@ const setLink = (selector: string, rel: string, href: string) => {
   element.href = href;
 };
 
+const upsertHreflang = (url: string) => {
+  document
+    .querySelectorAll('link[data-pakhsa-seo="hreflang"]')
+    .forEach((node) => node.remove());
+
+  const entries: { hreflang: string; href: string }[] = [
+    { hreflang: "en-IN", href: url },
+    { hreflang: "x-default", href: url },
+  ];
+
+  entries.forEach(({ hreflang, href }) => {
+    const link = document.createElement("link");
+    link.rel = "alternate";
+    link.hreflang = hreflang;
+    link.href = href;
+    link.dataset.pakhsaSeo = "hreflang";
+    document.head.appendChild(link);
+  });
+};
+
 const upsertStructuredData = (items: Record<string, unknown>[]) => {
   document
     .querySelectorAll('script[data-pakhsa-seo="structured-data"]')
@@ -119,6 +139,7 @@ const SEO = ({
     });
 
     setLink('link[rel="canonical"]', "canonical", url);
+    upsertHreflang(url);
 
     upsertStructuredData(schemaItems);
   }, [description, image, imageAlt, keywords, path, robots, structuredData, title, type]);

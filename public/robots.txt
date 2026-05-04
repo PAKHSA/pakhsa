@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pakhsa.in/sitemap.xml
-Host: pakhsa.in
+Sitemap: https://www.pakhsa.in/sitemap.xml
