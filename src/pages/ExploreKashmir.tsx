@@ -7,15 +7,7 @@ import PakhsaModal from "@/components/PakhsaModal";
 import ItineraryRoadmap from "@/components/ItineraryRoadmap";
 import SEO from "@/components/SEO";
 import { SEO as SEO_DEFAULTS, absoluteUrl } from "@/lib/seo";
-import hotelsDirectory from "@/data/hotels-directory.json";
 import travelDirectory from "@/data/travel-directory.json";
-
-type DirectoryHotel = {
-  name: string;
-  phone: string;
-  location: string;
-  type: string;
-};
 
 type AgencyRecord = {
   rank: number;
@@ -34,9 +26,9 @@ type AgencyRecord = {
   appNo?: string;
 };
 
-const sectionIds = ["itinerary", "stay", "rentals", "food", "agencies"];
-const sectionLabels = ["Itinerary", "Stay", "Rentals", "Food", "Agencies"];
-const sectionIcons = ["🗺️", "🏠", "🚗", "🍽️", "🏢"];
+const sectionIds = ["itinerary", "rentals", "agencies"];
+const sectionLabels = ["Itinerary", "Rentals", "Agencies"];
+const sectionIcons = ["🗺️", "🚗", "🏢"];
 
 /* ───── AGENCIES DATA ───── */
 const agencies: AgencyRecord[] = [
@@ -83,13 +75,6 @@ const agencies: AgencyRecord[] = [
   { rank: 1695, name: "Honor Tour & Travels", rating: 4.8, reviews: 732, owner: "Mr. Sajid Rasool Gujree", location: "Safa Kadal", phone: "9149876757", email: "sajidrasool12@gmail.com" },
   { rank: 1696, name: "M/S Adorable Tour and Travels", rating: 4.8, reviews: 245, owner: "Tabasum Majeed", location: "M. D Complex, Karan Nagar, Srinagar", phone: "9103000435", email: "traveladorable@gmail.com" },
 ];
-
-const directoryHotels: DirectoryHotel[] = (hotelsDirectory as DirectoryHotel[]).map((hotel) => ({
-  name: hotel.name,
-  phone: hotel.phone || "",
-  location: hotel.location || "",
-  type: hotel.type || "Hotel",
-}));
 
 const importedAgencies: AgencyRecord[] = (travelDirectory as Array<{
   appNo?: string;
@@ -511,13 +496,6 @@ const itinerary = [
   },
 ];
 
-const stays = [
-  { type: "HOUSEBOAT", name: "Sukoon Houseboat", loc: "Dal Lake", price: "₹₹₹", highlights: ["Luxury houseboat", "Lake views", "Butler service"], rating: 4.9, reviews: 1247, verified: true, image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80" },
-  { type: "HERITAGE", name: "Lalit Grand Palace", loc: "Srinagar", price: "₹₹₹", highlights: ["19th-century palace", "Heritage rooms", "City views"], rating: 4.7, reviews: 3892, verified: true, image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&q=80" },
-  { type: "GLAMPING", name: "Sonamarg Glacier Glamping", loc: "Sonamarg", price: "₹₹₹", highlights: ["Luxury tents", "Near glacier", "May–Sep only"], rating: 4.8, reviews: 432, verified: true, image: "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?w=600&q=80" },
-  { type: "HOUSEBOAT", name: "WelcomHeritage Houseboats", loc: "Dal Lake", price: "₹₹", highlights: ["Mid-range", "Warm local hosts", "Great value"], rating: 4.6, reviews: 2103, verified: true, image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80" },
-];
-
 const overallRentals = [
   {
     type: "CABS",
@@ -593,53 +571,11 @@ const overallRentals = [
   },
 ];
 
-const restaurants = [
-  { name: "Ahdoos Restaurant", loc: "Residency Road", dishes: "Rogan Josh, Yakhni, Gushtaba", tagline: "The oldest in Srinagar.", rating: 4.5, reviews: 4521, verified: true, image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" },
-  { name: "Mughal Darbar", loc: "Residency Road", dishes: "Seekh Kebab, Roganjosh", tagline: "Always packed. Always worth it.", rating: 4.4, reviews: 3876, verified: true, image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&q=80" },
-  { name: "Stream & Greens Café", loc: "Pahalgam", dishes: "Trout dishes, Kahwa tea", tagline: "River-view, mountain soul.", rating: 4.6, reviews: 892, verified: true, image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80" },
-  { name: "Chai Jaai", loc: "Lal Chowk", dishes: "Noon Chai (Pink Tea), Kulcha", tagline: "The best chai stop in the city.", rating: 4.7, reviews: 1245, verified: true, image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" },
-  { name: "Wazwan House", loc: "Rainawari", dishes: "Full 36-dish Wazwan thali", tagline: "Book 24 hours ahead. Trust us.", rating: 4.8, reviews: 2134, verified: true, image: "https://images.unsplash.com/photo-1517244683847-7456b63c5969?w=600&q=80" },
-  { name: "Boulevard Café", loc: "Dal Boulevard", dishes: "Shufta, Phirni, waterfront", tagline: "Dinner with the lake.", rating: 4.5, reviews: 1678, verified: true, image: "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600&q=80" },
-];
-
-const glossary = [
-  { term: "Rogan Josh", desc: "Tender lamb slow-cooked in aromatic Kashmiri spices" },
-  { term: "Yakhni", desc: "Yogurt-based curry with cardamom and fennel" },
-  { term: "Gushtaba", desc: "Minced meat balls in rich yogurt gravy" },
-  { term: "Wazwan", desc: "Multi-course ceremonial feast" },
-  { term: "Noon Chai", desc: "Pink salt tea with milk and baking soda" },
-  { term: "Shufta", desc: "Sweet dry fruit dessert with saffron" },
-  { term: "Phirni", desc: "Creamy rice pudding with pistachios" },
-  { term: "Kehwa", desc: "Green tea with saffron and almonds" },
-];
-
 /* ───── PAGE ───── */
 const ExploreKashmir = () => {
   const [agencyModalOpen, setAgencyModalOpen] = useState(false);
   const [selectedAgencyForModal, setSelectedAgencyForModal] = useState<AgencyRecord | null>(null);
-  const [hotelSearch, setHotelSearch] = useState("");
-  const [hotelFilter, setHotelFilter] = useState<"All" | "Hotel">("All");
   const location = useLocation();
-
-  const filteredHotels = useMemo(() => {
-    const term = hotelSearch.toLowerCase();
-    const byFilter = directoryHotels.filter((hotel) => {
-      if (hotelFilter === "All") return true;
-      return hotel.type === "Hotel";
-    });
-
-    if (!term) return byFilter;
-
-    return byFilter.filter(
-      (hotel) =>
-        hotel.name.toLowerCase().includes(term) ||
-        hotel.location.toLowerCase().includes(term) ||
-        hotel.phone.includes(term) ||
-        hotel.type.toLowerCase().includes(term)
-    );
-  }, [hotelFilter, hotelSearch]);
-
-  const visibleHotels = hotelSearch.trim() || hotelFilter !== "All" ? filteredHotels : filteredHotels.slice(0, 6);
 
   useEffect(() => {
     if (location.hash) {
@@ -673,7 +609,7 @@ const ExploreKashmir = () => {
   <div className="overflow-x-hidden">
     <SEO
       title="Explore Kashmir"
-      description="Itinerary, places to stay, food worth eating, and tour & travel agencies registered with J&K Tourism."
+      description="Itinerary, rentals, and tour & travel agencies registered with J&K Tourism."
       path="/explore"
       keywords={[
         ...SEO_DEFAULTS.defaultKeywords,
@@ -683,11 +619,8 @@ const ExploreKashmir = () => {
         "Kashmir Travels",
         "Kashmir Tours and travels",
         "Kashmir Bike rentals",
-        "Kashmir stays",
         "Kashmir cab",
         "Kashmir taxi",
-        "places to stay in Kashmir",
-        "Kashmir food guide",
         "Srinagar travel agencies",
         "Kashmir bike rental",
       ]}
@@ -698,7 +631,7 @@ const ExploreKashmir = () => {
           name: "Explore Kashmir",
           url: absoluteUrl("/explore"),
           description:
-            "Itinerary, stays, food, rentals, and J&K Tourism–registered agencies in one place.",
+            "Itinerary, rentals, and J&K Tourism–registered agencies in one place.",
           isPartOf: {
             "@type": "WebSite",
             name: SEO_DEFAULTS.siteName,
@@ -753,7 +686,7 @@ const ExploreKashmir = () => {
             EVERYTHING YOU NEED<br />IN ONE PLACE.
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-6 leading-relaxed">
-            Itinerary, places to stay, food worth eating, and people who can take you there.
+            Itinerary, rentals, and people who can take you there.
           </p>
           
           {/* Quick scroll hint */}
@@ -890,173 +823,6 @@ const ExploreKashmir = () => {
       </div>
     </section>
 
-    {/* STAY */}
-    <section id="stay" className="section-padding bg-card">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <p className="eyebrow mb-4">— WHERE TO SLEEP</p>
-          <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-4 leading-[1.1]">
-            WAKE UP ON THE LAKE.
-          </h2>
-        </motion.div>
-        <motion.div 
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {stays.map((s, i) => (
-            <motion.div
-              key={i}
-              variants={fadeIn}
-              whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className="border border-border bg-background/50 hover:border-accent/50 transition-colors rounded-xl overflow-hidden group"
-            >
-              {/* Image */}
-              <div className="relative h-40 overflow-hidden">
-                <img 
-                  src={s.image} 
-                  alt={s.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                
-                {/* Badges on image */}
-                <div className="absolute top-3 left-3 right-3 flex items-start justify-between">
-                  <span className="px-2 py-1 bg-accent text-accent-foreground text-[10px] font-bold uppercase rounded">{s.type}</span>
-                  {s.verified && (
-                    <span className="px-2 py-1 bg-green-500/90 text-white text-[10px] font-medium rounded">VERIFIED</span>
-                  )}
-                </div>
-                
-                {/* Price on image */}
-                <div className="absolute bottom-3 right-3">
-                  <span className="px-2 py-1 bg-white/90 text-black text-xs font-bold rounded">{s.price}</span>
-                </div>
-              </div>
-              
-              {/* Content */}
-              <div className="p-4">
-                <h3 className="text-lg font-bold uppercase text-foreground mb-1 group-hover:text-accent transition-colors">{s.name}</h3>
-                <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />{s.loc}
-                </p>
-                
-                {/* Rating */}
-                <div className="flex items-center gap-2 mb-3 py-2 border-y border-border">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    <span className="font-bold text-foreground">{s.rating}</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">({s.reviews.toLocaleString()} reviews)</span>
-                </div>
-                
-                <ul className="space-y-1">
-                  {s.highlights.map((h, j) => (
-                    <li key={j} className="text-sm text-muted-foreground flex items-center gap-2">
-                      <span className="w-1 h-1 bg-accent rounded-full" />{h}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        <motion.div
-          className="mt-10 rounded-2xl border border-border bg-background/60 p-5 md:p-6"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="eyebrow mb-2">— KASHMIR STAYS DIRECTORY</p>
-              <p className="text-sm text-muted-foreground">
-                {directoryHotels.length} registered stays. Search by name, phone, or location.
-              </p>
-            </div>
-            <div className="w-full md:max-w-md">
-              <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
-                <Search className="h-4 w-4 text-muted-foreground" />
-                <input
-                  type="text"
-                  value={hotelSearch}
-                  onChange={(e) => setHotelSearch(e.target.value)}
-                  placeholder="Search by name or place…"
-                  className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            {(["All", "Hotel"] as const).map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setHotelFilter(filter)}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
-                  hotelFilter === filter
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-muted text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {visibleHotels.map((hotel) => (
-              <div key={`${hotel.name}-${hotel.location}`} className="rounded-xl border border-border bg-card/60 p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="text-sm font-bold uppercase text-foreground">{hotel.name}</h3>
-                    <p className="mt-1 text-xs text-muted-foreground">{hotel.type}</p>
-                  </div>
-                  <span className="rounded-full bg-accent/10 px-2 py-1 text-[10px] font-medium uppercase text-accent">
-                    Directory
-                  </span>
-                </div>
-                <div className="mt-3 space-y-2 text-sm">
-                  <div className="flex items-start gap-2 text-muted-foreground">
-                    <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-                    <span>{hotel.location || "Location not listed"}</span>
-                  </div>
-                  {hotel.phone ? (
-                    <a href={`tel:${hotel.phone}`} className="flex items-center gap-2 text-foreground hover:text-accent transition-colors">
-                      <Phone className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <span>+91 {hotel.phone}</span>
-                    </a>
-                  ) : (
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Phone className="h-4 w-4 shrink-0" />
-                      <span>Cell no not listed</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {!visibleHotels.length ? (
-            <p className="mt-6 text-sm text-muted-foreground">Nothing here. Try a different search.</p>
-          ) : null}
-
-          {hotelSearch.trim() || hotelFilter !== "All" ? null : (
-            <p className="mt-4 text-xs text-muted-foreground">
-              Showing the first 6 entries by default. Use the search bar or filters to narrow the full directory.
-            </p>
-          )}
-        </motion.div>
-      </div>
-    </section>
-
     {/* RENTALS */}
     <section id="rentals" className="section-padding bg-background">
       <div className="container mx-auto px-4">
@@ -1141,104 +907,6 @@ const ExploreKashmir = () => {
             <span className="font-bold">PAKHSA TIP:</span> Sharing a ride is almost always cheaper. Check Pakhsa first.
           </p>
         </motion.div>
-      </div>
-    </section>
-
-    {/* FOOD */}
-    <section id="food" className="section-padding bg-card">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <p className="eyebrow mb-4">— WHAT TO EAT</p>
-          <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-10 leading-[1.1]">
-            KASHMIRI FOOD ISN&apos;T JUST FOOD.
-          </h2>
-        </motion.div>
-        <motion.div 
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {restaurants.map((r, i) => (
-            <motion.div
-              key={i}
-              variants={fadeIn}
-              whileHover={{ y: -6 }}
-              className="border border-border rounded-xl bg-background/50 hover:border-accent/50 transition-all group overflow-hidden"
-            >
-              {/* Image */}
-              <div className="relative h-36 overflow-hidden">
-                <img 
-                  src={r.image} 
-                  alt={r.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                
-                {/* Verified badge */}
-                {r.verified && (
-                  <span className="absolute top-3 right-3 px-2 py-1 bg-green-500/90 text-white text-[10px] font-medium rounded">VERIFIED</span>
-                )}
-                
-                {/* Name on image */}
-                <div className="absolute bottom-3 left-3 right-3">
-                  <h3 className="text-base font-bold uppercase text-white">{r.name}</h3>
-                  <p className="text-xs text-white/80 flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />{r.loc}
-                  </p>
-                </div>
-              </div>
-              
-              {/* Content */}
-              <div className="p-4">
-                {/* Rating */}
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    <span className="font-bold text-foreground">{r.rating}</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">({r.reviews.toLocaleString()} reviews)</span>
-                </div>
-                
-                <p className="text-sm text-muted-foreground mb-2">{r.dishes}</p>
-                <p className="text-sm text-accent italic">"{r.tagline}"</p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Glossary - Collapsible */}
-        <motion.details
-          className="mt-12 max-w-3xl group"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <summary className="cursor-pointer list-none">
-            <div className="flex items-center gap-3 py-4 border-t border-border hover:bg-muted/30 -mx-4 px-4 transition-colors rounded">
-              <ChevronDown className="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform" />
-              <span className="eyebrow">— WHAT&apos;S ON YOUR PLATE</span>
-              <span className="text-xs text-muted-foreground ml-auto">Click to expand</span>
-            </div>
-          </summary>
-          <motion.div
-            className="grid sm:grid-cols-2 gap-4 py-4 pl-7"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            {glossary.map((g, i) => (
-              <div key={i} className="p-2 rounded hover:bg-muted/30 transition-colors">
-                <span className="text-sm font-bold text-foreground">{g.term}</span>
-                <span className="text-sm text-muted-foreground"> — {g.desc}</span>
-              </div>
-            ))}
-          </motion.div>
-        </motion.details>
       </div>
     </section>
 
