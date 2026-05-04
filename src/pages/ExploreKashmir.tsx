@@ -1,12 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { Search, Star, MapPin, Phone, Mail, X, ChevronDown, Navigation, Mountain, TreePine, Waves, Snowflake, Sun, Coffee, ExternalLink, Globe } from "lucide-react";
+import { Search, Star, MapPin, Phone, Mail, X, ChevronDown, Navigation, Mountain, TreePine, Waves, Snowflake, Sun, Coffee, ExternalLink, Globe, Instagram } from "lucide-react";
 import Footer from "@/components/Footer";
 import PakhsaModal from "@/components/PakhsaModal";
 import ItineraryRoadmap from "@/components/ItineraryRoadmap";
 import SEO from "@/components/SEO";
 import { SEO as SEO_DEFAULTS, absoluteUrl } from "@/lib/seo";
+import { trekkingDirectory, type TrekkingOrg } from "@/data/trekking-directory";
 import travelDirectory from "@/data/travel-directory.json";
 
 type AgencyRecord = {
@@ -26,9 +27,9 @@ type AgencyRecord = {
   appNo?: string;
 };
 
-const sectionIds = ["itinerary", "rentals", "agencies"];
-const sectionLabels = ["Itinerary", "Rentals", "Agencies"];
-const sectionIcons = ["🗺️", "🚗", "🏢"];
+const sectionIds = ["itinerary", "rentals", "trekking", "agencies"];
+const sectionLabels = ["Itinerary", "Rentals", "Trekking", "Agencies"];
+const sectionIcons = ["🗺️", "🚗", "🥾", "🏢"];
 
 /* ───── AGENCIES DATA ───── */
 const agencies: AgencyRecord[] = [
@@ -180,6 +181,164 @@ const SectionNav = () => {
 
 /* ───── AGENCY SEARCH MODAL ───── */
 const agencyFilters = ["All", "Featured", "Travel Agent", "Excursion Agent"] as const;
+
+const TrekkingModal = ({
+  isOpen,
+  onClose,
+  trekOrg,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  trekOrg: TrekkingOrg | null;
+}) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [isOpen, onClose]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && trekOrg ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] px-4"
+          onClick={onClose}
+        >
+          <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: -12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: -12 }}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            className="relative w-full max-w-2xl rounded-2xl border border-border bg-card shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4 border-b border-border px-5 py-5">
+              <div>
+                <p className="eyebrow mb-2">— TREKKING DETAILS</p>
+                <h3 className="text-2xl font-[800] uppercase tracking-tight text-foreground">{trekOrg.name}</h3>
+                <p className="mt-2 text-sm text-muted-foreground flex items-center gap-2">
+                  <MapPin className="h-4 w-4 shrink-0" />
+                  {trekOrg.location}
+                </p>
+              </div>
+              <button onClick={onClose} className="rounded-md p-2 hover:bg-muted transition-colors" aria-label="Close trekking details">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="max-h-[75vh] overflow-y-auto px-5 py-5">
+              <div className="flex flex-wrap gap-2">
+                {trekOrg.treks.map((trek) => (
+                  <span key={trek} className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
+                    {trek}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-5 rounded-xl border border-border bg-background/70 p-4">
+                <div className="flex items-center gap-2">
+                  <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
+                  <span className="font-semibold text-foreground">
+                    {trekOrg.rating ? `${trekOrg.rating}${trekOrg.reviewsCount ? "" : "+"}` : "Public review note"}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {trekOrg.reviewsCount
+                      ? `(${trekOrg.reviewsCount.toLocaleString()} reviews${trekOrg.reviewSource ? ` • ${trekOrg.reviewSource}` : ""})`
+                      : trekOrg.reviewSource || "No public aggregate listed"}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">{trekOrg.reviewSummary}</p>
+              </div>
+
+              <div className="mt-5 grid gap-5 md:grid-cols-2">
+                <div>
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Contact</p>
+                  <div className="mt-3 space-y-2">
+                    {trekOrg.phones.map((phone) => (
+                      <a key={phone} href={`tel:${phone}`} className="flex items-center gap-2 text-foreground hover:text-accent transition-colors">
+                        <Phone className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <span>+91 {phone}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Email</p>
+                  <div className="mt-3 space-y-2">
+                    {trekOrg.emails.length ? (
+                      trekOrg.emails.map((email) => (
+                        <a key={email} href={`mailto:${email}`} className="flex items-center gap-2 text-foreground hover:text-accent transition-colors break-all">
+                          <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
+                          <span>{email}</span>
+                        </a>
+                      ))
+                    ) : (
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Mail className="h-4 w-4 shrink-0" />
+                        <span>Not publicly listed</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-3 md:grid-cols-2">
+                <a
+                  href={trekOrg.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between rounded-xl border border-border bg-background/70 px-4 py-3 text-sm text-foreground hover:border-accent/50 transition-colors"
+                >
+                  <span className="flex items-center gap-2"><Globe className="h-4 w-4 text-muted-foreground" />Website</span>
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+                <a
+                  href={trekOrg.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between rounded-xl border border-border bg-background/70 px-4 py-3 text-sm text-foreground hover:border-accent/50 transition-colors"
+                >
+                  <span className="flex items-center gap-2"><ExternalLink className="h-4 w-4 text-muted-foreground" />Source</span>
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              </div>
+
+              <div className="mt-3">
+                {trekOrg.instagram ? (
+                  <a
+                    href={trekOrg.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between rounded-xl border border-border bg-background/70 px-4 py-3 text-sm text-foreground hover:border-accent/50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Instagram className="h-4 w-4 text-muted-foreground" />
+                      {trekOrg.instagram.replace("https://www.instagram.com/", "@").replace(/\/$/, "")}
+                    </span>
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                ) : (
+                  <div className="flex items-center gap-2 rounded-xl border border-border bg-background/70 px-4 py-3 text-sm text-muted-foreground">
+                    <Instagram className="h-4 w-4" />
+                    <span>Instagram not publicly listed</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
+  );
+};
 
 const AgencySearchModal = ({ isOpen, onClose, initialAgency = null }: { isOpen: boolean; onClose: () => void; initialAgency?: AgencyRecord | null }) => {
   const [search, setSearch] = useState("");
@@ -575,6 +734,7 @@ const overallRentals = [
 const ExploreKashmir = () => {
   const [agencyModalOpen, setAgencyModalOpen] = useState(false);
   const [selectedAgencyForModal, setSelectedAgencyForModal] = useState<AgencyRecord | null>(null);
+  const [selectedTrekOrg, setSelectedTrekOrg] = useState<TrekkingOrg | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -609,7 +769,7 @@ const ExploreKashmir = () => {
   <div className="overflow-x-hidden">
     <SEO
       title="Explore Kashmir"
-      description="Itinerary, rentals, and tour & travel agencies registered with J&K Tourism."
+      description="Itinerary, rentals, trekking operators, and tour & travel agencies registered with J&K Tourism."
       path="/explore"
       keywords={[
         ...SEO_DEFAULTS.defaultKeywords,
@@ -619,6 +779,9 @@ const ExploreKashmir = () => {
         "Kashmir Travels",
         "Kashmir Tours and travels",
         "Kashmir Bike rentals",
+        "Kashmir trekking operators",
+        "Kashmir Great Lakes trek organizers",
+        "Jammu and Kashmir trek companies",
         "Kashmir cab",
         "Kashmir taxi",
         "Srinagar travel agencies",
@@ -631,7 +794,7 @@ const ExploreKashmir = () => {
           name: "Explore Kashmir",
           url: absoluteUrl("/explore"),
           description:
-            "Itinerary, rentals, and J&K Tourism–registered agencies in one place.",
+            "Itinerary, rentals, trekking operators, and J&K Tourism–registered agencies in one place.",
           isPartOf: {
             "@type": "WebSite",
             name: SEO_DEFAULTS.siteName,
@@ -664,6 +827,7 @@ const ExploreKashmir = () => {
     />
     <PakhsaModal />
     <AgencySearchModal isOpen={agencyModalOpen} onClose={() => setAgencyModalOpen(false)} initialAgency={selectedAgencyForModal} />
+    <TrekkingModal isOpen={!!selectedTrekOrg} onClose={() => setSelectedTrekOrg(null)} trekOrg={selectedTrekOrg} />
 
     {/* Hero - Compact with quick actions */}
     <section className="relative min-h-[60vh] flex items-center pt-16">
@@ -686,7 +850,7 @@ const ExploreKashmir = () => {
             EVERYTHING YOU NEED<br />IN ONE PLACE.
           </h1>
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-6 leading-relaxed">
-            Itinerary, rentals, and people who can take you there.
+            Itinerary, rentals, trekking contacts, and people who can take you there.
           </p>
           
           {/* Quick scroll hint */}
@@ -906,6 +1070,98 @@ const ExploreKashmir = () => {
           <p className="text-sm text-foreground">
             <span className="font-bold">PAKHSA TIP:</span> Sharing a ride is almost always cheaper. Check Pakhsa first.
           </p>
+        </motion.div>
+      </div>
+    </section>
+
+    {/* TREKKING */}
+    <section id="trekking" className="section-padding bg-card">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-10"
+        >
+          <p className="eyebrow mb-4">— TREKKING</p>
+          <h2 className="text-3xl md:text-4xl font-[800] uppercase tracking-tight text-foreground mb-3 leading-[1.1]">
+            WHO TAKES PEOPLE TO KGL AND BEYOND.
+          </h2>
+          <p className="text-muted-foreground text-base max-w-xl">
+            Minimal shortlist. Tap any card for contact, reviews, Instagram, and source links.
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="grid md:grid-cols-2 xl:grid-cols-3 gap-4"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {trekkingDirectory.map((org) => (
+            <motion.div
+              key={org.name}
+              variants={fadeIn}
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              onClick={() => setSelectedTrekOrg(org)}
+              className="rounded-2xl border border-border bg-background/60 p-5 cursor-pointer transition-colors hover:border-accent/50 group"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-lg font-bold uppercase text-foreground group-hover:text-accent transition-colors">{org.name}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground flex items-center gap-1">
+                    <MapPin className="h-3.5 w-3.5 shrink-0" />
+                    {org.location}
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-full bg-accent/10 px-2.5 py-1 text-[10px] font-medium uppercase text-accent">
+                  Trek
+                </span>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {org.treks.slice(0, 2).map((trek) => (
+                  <span key={trek} className="rounded-full bg-muted px-2.5 py-1 text-[11px] text-muted-foreground">
+                    {trek}
+                  </span>
+                ))}
+                {org.treks.length > 2 ? (
+                  <span className="rounded-full bg-muted px-2.5 py-1 text-[11px] text-muted-foreground">
+                    +{org.treks.length - 2} more
+                  </span>
+                ) : null}
+              </div>
+
+              <div className="mt-5 flex items-center justify-between gap-3 py-3 border-y border-border">
+                <div className="flex items-center gap-2">
+                  <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
+                  <span className="font-semibold text-foreground">
+                    {org.rating ? org.rating : "Verified"}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {org.reviewsCount
+                      ? `${org.reviewsCount.toLocaleString()} reviews`
+                      : org.reviewSource || "Details inside"}
+                  </span>
+                </div>
+                <span className="text-xs uppercase tracking-wide text-muted-foreground group-hover:text-foreground transition-colors">
+                  View details
+                </span>
+              </div>
+
+              <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Phone className="h-3.5 w-3.5" />
+                  {org.phones[0]}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Instagram className="h-3.5 w-3.5" />
+                  {org.instagram ? "Available" : "Limited"}
+                </span>
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>
